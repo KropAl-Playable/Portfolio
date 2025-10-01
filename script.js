@@ -229,14 +229,17 @@ function setupProjectTabs() {
   tabs[0].classList.add('active');
 }
 
-// Sticky header shrink on scroll
+// Sticky header shrink on scroll (fix shaking)
+let headerShrinkApplied = false;
 window.addEventListener('scroll', function() {
   const header = document.getElementById('main-header');
   if (!header) return;
-  if (window.scrollY > 60) {
+  if (window.scrollY > 80 && !headerShrinkApplied) {
     header.classList.add('shrink');
-  } else {
+    headerShrinkApplied = true;
+  } else if (window.scrollY <= 40 && headerShrinkApplied) {
     header.classList.remove('shrink');
+    headerShrinkApplied = false;
   }
 });
 
