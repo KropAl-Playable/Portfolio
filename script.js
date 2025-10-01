@@ -127,38 +127,88 @@ function isBanner(project) {
   return project.playable && project.playable.type === 'banner';
 }
 
-function renderProjects() {
-  const container = document.getElementById("project-list");
-  container.innerHTML = '';
-  let projects = [...allProjects];
-  // Filter
-  if (currentFilter === '3d') projects = projects.filter(is3D);
-  if (currentFilter === '2d') projects = projects.filter(is2D);
-  if (currentFilter === 'playable') projects = projects.filter(isPlayable);
-  if (currentFilter === 'banner') projects = projects.filter(isBanner);
-  // Sort
-  projects.sort((a, b) => {
-    if (currentSort === 'newest') return new Date(b.date) - new Date(a.date);
-    if (currentSort === 'oldest') return new Date(a.date) - new Date(b.date);
-    return 0;
-  });
-  // Render
   projects.forEach(project => {
     const card = document.createElement("div");
     card.className = "card";
     // Cover container for uniform size
     const coverContainer = document.createElement("div");
     coverContainer.className = "card-cover-container";
-    const cover = document.createElement("img");
-    cover.src = project.cover.fallback;
-    cover.alt = project.title;
-    coverContainer.appendChild(cover);
+
+    // PIXI.js cover animation
+    const pixiApp = new PIXI.Application({
+      width: 280, // will be resized
+      height: 500,
+      backgroundAlpha: 0,
+      antialias: true,
+      resolution: window.devicePixelRatio || 1,
+      autoDensity: true
+    });
+    coverContainer.appendChild(pixiApp.view);
+    // Load image as PIXI sprite
+    const texture = PIXI.Texture.from(project.cover.fallback);
+    const sprite = new PIXI.Sprite(texture);
+    sprite.anchor.set(0.5);
+    pixiApp.stage.addChild(sprite);
+    // Resize canvas and sprite to fit container
+    function resizePixi() {
+      const rect = coverContainer.getBoundingClientRect();
+      pixiApp.renderer.resize(rect.width, rect.height);
+      sprite.x = rect.width / 2;
+      sprite.y = rect.height / 2;
+      // Cover fit
+      const scale = Math.max(rect.width / texture.width, rect.height / texture.height);
+      sprite.width = texture.width * scale;
+      sprite.height = texture.height * scale;
+    }
+    // Initial resize
+    setTimeout(resizePixi, 0);
+    window.addEventListener('resize', resizePixi);
+    // Hover animation: scale and perspective
+    let hover = false;
+    let mouseX = 0, mouseY = 0;
+    coverContainer.addEventListener('mouseenter', () => { hover = true; });
+    coverContainer.addEventListener('mouseleave', () => {
+      hover = false;
+      sprite.scale.set(1, 1);
+      sprite.rotation = 0;
+      pixiApp.stage.pivot.set(0, 0);
+      pixiApp.stage.position.set(0, 0);
+      pixiApp.stage.angle = 0;
+    });
+    coverContainer.addEventListener('mousemove', (e) => {
+      const rect = coverContainer.getBoundingClientRect();
+      mouseX = (e.clientX - rect.left) / rect.width - 0.5;
+      mouseY = (e.clientY - rect.top) / rect.height - 0.5;
+    });
+    pixiApp.ticker.add(() => {
+      if (hover) {
+        // Scale up
+        sprite.scale.set(1.07, 1.07);
+        // Perspective skew/rotation
+        const maxAngle = 0.18; // ~10deg
+        sprite.rotation = -mouseX * maxAngle * 0.5;
+        pixiApp.stage.pivot.set(sprite.x, sprite.y);
+        pixiApp.stage.position.set(sprite.x, sprite.y);
+        pixiApp.stage.angle = mouseX * 8;
+      } else {
+        sprite.scale.set(1, 1);
+        sprite.rotation = 0;
+        pixiApp.stage.pivot.set(0, 0);
+        pixiApp.stage.position.set(0, 0);
+        pixiApp.stage.angle = 0;
+      }
+    });
+
     const content = document.createElement("div");
     content.className = "card-content";
     const title = document.createElement("h3");
     title.textContent = project.title;
-    const desc = document.createElement("p");
-    desc.textContent = isRussian ? project.description : (project.description_en || project.description);
+    // Description block scrollable
+    const descScroll = document.createElement("div");
+    descScroll.className = "card-desc-scroll";
+    descScroll.textContent = isRussian ? project.description : (project.description_en || project.description);
+    content.appendChild(title);
+    content.appendChild(descScroll);
     // Date (hidden, for sorting only)
     const date = document.createElement("p");
     date.className = "date";
@@ -182,6 +232,18 @@ function renderProjects() {
     // Device-aware store link
     let storeUrl = project.linkStoreGoogle || project.linkStore || "";
     if (project.linkStoreAppStore && /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent)) {
+      storeUrl = project.linkStoreAppStore;
+    }
+    storeButton.href = storeUrl || "#";
+    if (!storeUrl) storeButton.style.display = "none";
+    actions.appendChild(playButton);
+    actions.appendChild(storeButton);
+    content.appendChild(date);
+    content.appendChild(actions);
+    card.appendChild(coverContainer);
+    card.appendChild(content);
+    container.appendChild(card);
+  });
       storeUrl = project.linkStoreAppStore;
     }
     storeButton.href = storeUrl || "#";
