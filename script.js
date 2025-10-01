@@ -98,62 +98,55 @@ function updatePageContent() {
     });
 }
 
-async function loadProjects() {
-  const res = await fetch("projects.json");
-  const data = await res.json();
+let allProjects = [];
+let currentSort = 'newest';
+let currentFilter = null;
 
+function is3D(project) {
+  return project.tags && project.tags.some(tag => tag.toLowerCase().includes('3d'));
+}
+function is2D(project) {
+  return project.tags && project.tags.some(tag => tag.toLowerCase().includes('2d'));
+}
+function isPlayable(project) {
+  return project.playable && project.playable.type === 'iframe';
+}
+function isBanner(project) {
+  return project.playable && project.playable.type === 'banner';
+}
+
+function renderProjects() {
   const container = document.getElementById("project-list");
-
-  // Create modal for playable preview
-  const modal = document.createElement("div");
-  modal.className = "modal";
-  modal.innerHTML = `
-    <div class="modal-content">
-      <span class="close-button">&times;</span>
-      <div class="iframe-container">
-        <iframe id="game-frame"></iframe>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
-
-  // Close modal functionality
-  const closeButton = modal.querySelector(".close-button");
-  closeButton.onclick = () => {
-    modal.style.display = "none";
-    const iframe = document.getElementById("game-frame");
-    iframe.src = "";
-  };
-
-  // Close on outside click
-  modal.onclick = (e) => {
-    if (e.target === modal) {
-      modal.style.display = "none";
-      const iframe = document.getElementById("game-frame");
-      iframe.src = "";
-    }
-  };
-
-  // Сортировка по дате (новые сверху)
-  data.projects.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-  data.projects.forEach(project => {
+  container.innerHTML = '';
+  let projects = [...allProjects];
+  // Filter
+  if (currentFilter === '3d') projects = projects.filter(is3D);
+  if (currentFilter === '2d') projects = projects.filter(is2D);
+  if (currentFilter === 'playable') projects = projects.filter(isPlayable);
+  if (currentFilter === 'banner') projects = projects.filter(isBanner);
+  // Sort
+  projects.sort((a, b) => {
+    if (currentSort === 'newest') return new Date(b.date) - new Date(a.date);
+    if (currentSort === 'oldest') return new Date(a.date) - new Date(b.date);
+    return 0;
+  });
+  // Render
+  projects.forEach(project => {
     const card = document.createElement("div");
     card.className = "card";
-
+    // Cover container for uniform size
+    const coverContainer = document.createElement("div");
+    coverContainer.className = "card-cover-container";
     const cover = document.createElement("img");
     cover.src = project.cover.fallback;
     cover.alt = project.title;
-
+    coverContainer.appendChild(cover);
     const content = document.createElement("div");
     content.className = "card-content";
-
     const title = document.createElement("h3");
     title.textContent = project.title;
-
     const desc = document.createElement("p");
     desc.textContent = isRussian ? project.description : (project.description_en || project.description);
-
     // 📌 Теги / жанры
     const tags = document.createElement("div");
     tags.className = "tags";
@@ -162,48 +155,82 @@ async function loadProjects() {
       span.textContent = tag;
       tags.appendChild(span);
     });
-
+    // Date (hidden, for sorting only)
     const date = document.createElement("p");
     date.className = "date";
     date.textContent = `Дата: ${new Date(project.date).toLocaleDateString("ru-RU")}`;
-
+    // Actions (stick to bottom)
     const actions = document.createElement("div");
     actions.className = "card-actions";
-
+    // Play button (large, on top)
     const playButton = document.createElement("button");
     playButton.className = "play-button";
-    playButton.innerHTML = "▶ Играть";
+    playButton.innerHTML = isRussian ? "▶ Играть" : "▶ Play";
     playButton.onclick = (e) => {
       e.preventDefault();
       const iframe = document.getElementById("game-frame");
       iframe.src = project.playable.src;
       modal.style.display = "block";
     };
-
-    const link = document.createElement("a");
-    link.href = project.linkStore || "#";
-    link.target = "_blank";
-    link.className = "store-link";
-    link.textContent = "Google Play";
-    if (!project.linkStore) link.style.display = "none";
-
+    // Store Page button (smaller, below)
+    const storeButton = document.createElement("a");
+    storeButton.className = "store-link";
+    storeButton.textContent = isRussian ? "Страница в магазине" : "Store Page";
+    storeButton.target = "_blank";
+    // Device-aware store link
+    let storeUrl = project.linkStoreGoogle || project.linkStore || "";
+    if (project.linkStoreAppStore && /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent)) {
+      storeUrl = project.linkStoreAppStore;
+    }
+    storeButton.href = storeUrl || "#";
+    if (!storeUrl) storeButton.style.display = "none";
     actions.appendChild(playButton);
-    actions.appendChild(link);
-
+    actions.appendChild(storeButton);
     content.appendChild(title);
     content.appendChild(desc);
     content.appendChild(tags);
     content.appendChild(date);
     content.appendChild(actions);
-
-    card.appendChild(cover);
+    card.appendChild(coverContainer);
     card.appendChild(content);
-
     container.appendChild(card);
   });
+}
+
+async function loadProjects() {
+  const res = await fetch("projects.json");
+  const data = await res.json();
+  allProjects = data.projects;
+  renderProjects();
+}
+
+function setupProjectTabs() {
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', function() {
+      tabs.forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+      if (this.dataset.sort) {
+        currentSort = this.dataset.sort;
+        // Remove filter highlight
+        currentFilter = null;
+        tabs.forEach(t => { if (t.dataset.filter) t.classList.remove('active'); });
+      }
+      if (this.dataset.filter) {
+        currentFilter = this.dataset.filter;
+        // Remove sort highlight
+        currentSort = 'newest';
+        tabs.forEach(t => { if (t.dataset.sort) t.classList.remove('active'); });
+      }
+      renderProjects();
+    });
+  });
+  // Set default active
+  tabs[0].classList.add('active');
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   updatePageContent();
   loadProjects();
+  setupProjectTabs();
 });

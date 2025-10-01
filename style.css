@@ -52,6 +52,7 @@ h2 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
+  margin-top: 0;
 }
 
 .card {
@@ -61,19 +62,38 @@ h2 {
   overflow: hidden;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .card:hover {
   transform: scale(1.03);
 }
 
-.card img {
+.card-cover-container {
   width: 100%;
+  aspect-ratio: 16/9;
+  background: #EDF2F4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.card-cover-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   display: block;
 }
 
 .card-content {
   padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  position: relative;
 }
 
 .card-content h3 {
@@ -86,19 +106,52 @@ h2 {
   color: #555;
 }
 
-.card-content a {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 8px 12px;
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 15px;
+  padding: 0 15px;
+}
+
+.play-button {
+  width: 100%;
+  padding: 16px 0 14px 0;
+  font-size: 1.15rem;
   background: #EF233C;
   color: white;
-  border-radius: 6px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+  margin-bottom: 4px;
+}
+
+.play-button:hover {
+  background: #D80032;
+}
+
+.store-link {
+  width: 100%;
+  display: inline-block;
+  padding: 10px 0 9px 0;
+  background: #8D99AE;
+  color: white;
+  text-align: center;
+  border-radius: 8px;
   text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
   transition: background 0.2s;
 }
 
-.card-content a:hover {
-  background: #D80032;
+.store-link:hover {
+  background: #2B2D42;
 }
 
 .tags {
@@ -116,9 +169,7 @@ h2 {
 }
 
 .date {
-  font-size: 0.85rem;
-  color: #8D99AE;
-  margin-top: 5px;
+  display: none;
 }
 
 /* CV Sections Styling */
@@ -301,41 +352,38 @@ footer {
   background: #000;
 }
 
-/* Card action buttons */
-.card-actions {
+/* Project Filters */
+.project-filters {
+  margin-bottom: 18px;
   display: flex;
-  gap: 10px;
-  margin-top: 15px;
+  justify-content: flex-start;
 }
 
-.play-button {
-  flex: 1;
-  padding: 10px;
-  background: #EF233C;
-  color: white;
-  border: none;
-  border-radius: 6px;
+.tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.tab {
+  background: #EDF2F4;
+  color: #2B2D42;
+  border: 1px solid #8D99AE;
+  border-radius: 6px 6px 0 0;
+  padding: 8px 18px;
+  font-size: 1rem;
   cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
 }
 
-.play-button:hover {
+.tab[data-active="true"], .tab.active {
+  background: #EF233C;
+  color: #fff;
+  border-bottom: 2px solid #EF233C;
+  z-index: 1;
+}
+
+.tab:hover {
   background: #D80032;
-}
-
-.store-link {
-  flex: 1;
-  display: inline-block;
-  padding: 10px;
-  background: #8D99AE;
-  color: white;
-  text-align: center;
-  border-radius: 6px;
-  text-decoration: none;
-  transition: background 0.2s;
-}
-
-.store-link:hover {
-  background: #2B2D42;
+  color: #fff;
 }

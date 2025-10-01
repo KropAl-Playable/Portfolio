@@ -16,6 +16,8 @@
       "popularity": 87,
       "linkDemo": "data/projects/desert_city/desert_restorer.html",
       "linkStore": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/desert_city/desert_restorer.html" }
     },
     {
@@ -34,6 +36,8 @@
       "popularity": 92,
       "linkDemo": "data/projects/desert_city/truck_upgrade.html",
       "linkStore": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/desert_city/truck_upgrade.html" }
     },
     {
@@ -52,6 +56,8 @@
       "popularity": 92,
       "linkDemo": "data/projects/desert_city/water_conveyor.html",
       "linkStore": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/desert_city/water_conveyor.html" }
     },
     {
@@ -70,6 +76,8 @@
       "popularity": 92,
       "linkDemo": "data/projects/desert_city/upgrade_collect.html",
       "linkStore": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/desert_city/upgrade_collect.html" }
     },
     {
@@ -88,6 +96,8 @@
       "popularity": 92,
       "linkDemo": "data/projects/desert_city/collect_fight.html",
       "linkStore": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/desert_city/collect_fight.html" }
     },
     {
@@ -106,6 +116,8 @@
       "popularity": 74,
       "linkDemo": "data/projects/one_state/rp_faction.html",
       "linkStore": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/one_state/rp_faction.html" }
     },
     {
@@ -124,6 +136,8 @@
       "popularity": 74,
       "linkDemo": "data/projects/one_state/warhouse.html",
       "linkStore": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/one_state/warhouse.html" }
     },
     {
@@ -142,6 +156,8 @@
       "popularity": 74,
       "linkDemo": "data/projects/one_state/warhouse_baseball.html",
       "linkStore": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/one_state/warhouse_baseball.html" }
     },
     {
@@ -160,6 +176,8 @@
       "popularity": 74,
       "linkDemo": "data/projects/one_state/car_tuning_long.html",
       "linkStore": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/one_state/car_tuning_long.html" }
     },
     {
@@ -178,6 +196,8 @@
       "popularity": 74,
       "linkDemo": "data/projects/one_state/improvement_car.html",
       "linkStore": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/one_state/improvement_car.html" }
     },
     {
@@ -196,6 +216,8 @@
       "popularity": 74,
       "linkDemo": "data/projects/test_projects/ride_master.html",
       "linkStore": "",
+      "linkStoreGoogle": "",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/test_projects/ride_master.html" }
     },
     {
@@ -214,6 +236,8 @@
       "popularity": 74,
       "linkDemo": "data/projects/idle_lumber/index.html",
       "linkStore": "https://play.google.com/store/apps/details?id=com.lumber.inc&hl=ru",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=com.lumber.inc&hl=ru",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/idle_lumber/index.html" }
     },
     {
@@ -232,6 +256,8 @@
       "popularity": 74,
       "linkDemo": "data/projects/army_forces/tutorial_3D.html",
       "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.military.operation.army.mission.tycoon&hl=ru",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=hotsiberians.idle.military.operation.army.mission.tycoon&hl=ru",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/army_forces/tutorial_3D.html" }
     },
     {
@@ -250,6 +276,8 @@
       "popularity": 74,
       "linkDemo": "data/projects/army_forces/training_tailor.html",
       "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.military.operation.army.mission.tycoon&hl=ru",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=hotsiberians.idle.military.operation.army.mission.tycoon&hl=ru",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/army_forces/training_tailor.html" }
     },
     {
@@ -268,6 +296,8 @@
       "popularity": 74,
       "linkDemo": "data/projects/army_forces/training-tailor.html",
       "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.military.operation.army.mission.tycoon&hl=ru",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=hotsiberians.idle.military.operation.army.mission.tycoon&hl=ru",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/army_forces/upgrade_soldier.html" }
     },
     {
@@ -286,6 +316,8 @@
       "popularity": 74,
       "linkDemo": "data/projects/zombie_hospital/build_hospital.html",
       "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/zombie_hospital/build_hospital.html" }
     },
     {
@@ -304,6 +336,8 @@
       "popularity": 74,
       "linkDemo": "data/projects/zombie_hospital/hospital_upgrade.html",
       "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/zombie_hospital/hospital_upgrade.html" }
     },
     {
@@ -322,6 +356,8 @@
       "popularity": 74,
       "linkDemo": "data/projects/zombie_hospital/talking_zombie.html",
       "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/zombie_hospital/talking_zombie.html" }
     },
     {
@@ -340,6 +376,8 @@
       "popularity": 74,
       "linkDemo": "data/projects/zombie_hospital/healing_surgery.html",
       "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/zombie_hospital/healing_surgery.html" }
     },
     {
@@ -358,6 +396,8 @@
       "popularity": 74,
       "linkDemo": "data/projects/idle_anomaly/catch_monsters.html",
       "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.anomalies.research.station.building.tycoon.simulator&hl=ru",
+      "linkStoreGoogle": "https://play.google.com/store/apps/details?id=hotsiberians.idle.anomalies.research.station.building.tycoon.simulator&hl=ru",
+      "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/idle_anomaly/catch_monsters.html" }
     }
   ]
