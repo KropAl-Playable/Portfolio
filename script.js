@@ -104,174 +104,174 @@ function createProjectCard(project) {
   const coverContainer = document.createElement("div");
   coverContainer.className = "card-cover-container";
 
-    let pixiApp, sprite;
-    // PIXI.js cover animation
-    if (typeof PIXI !== 'undefined') {
-      try {
-        pixiApp = new PIXI.Application({
-          width: 280, // will be resized
-          height: 500,
-          backgroundAlpha: 0,
-          antialias: true,
-          resolution: window.devicePixelRatio || 1,
-          autoDensity: true
-        });
-        coverContainer.appendChild(pixiApp.view);
+  let pixiApp, sprite;
+  // PIXI.js cover animation
+  if (typeof PIXI !== 'undefined') {
+    try {
+      pixiApp = new PIXI.Application({
+        width: 280, // will be resized
+        height: 500,
+        backgroundAlpha: 0,
+        antialias: true,
+        resolution: window.devicePixelRatio || 1,
+        autoDensity: true
+      });
+      coverContainer.appendChild(pixiApp.view);
+      
+      // Load image lazily with error handling
+      PIXI.Texture.fromURL(project.cover.fallback).then(texture => {
+        if (!pixiApp) return; // App might have been destroyed
+        sprite = new PIXI.Sprite(texture);
+        sprite.anchor.set(0.5);
+        pixiApp.stage.addChild(sprite);
         
-        // Load image lazily with error handling
-        PIXI.Texture.fromURL(project.cover.fallback).then(texture => {
-          if (!pixiApp) return; // App might have been destroyed
-          sprite = new PIXI.Sprite(texture);
-          sprite.anchor.set(0.5);
-          pixiApp.stage.addChild(sprite);
-          
-          // Set up resize and interaction after sprite is loaded
-          function resizePixi() {
-            const rect = coverContainer.getBoundingClientRect();
-            if (!pixiApp || !sprite) return;
-            pixiApp.renderer.resize(rect.width, rect.height);
-            sprite.x = rect.width / 2;
-            sprite.y = rect.height / 2;
-            const scale = Math.max(rect.width / texture.width, rect.height / texture.height);
-            sprite.width = texture.width * scale;
-            sprite.height = texture.height * scale;
-          }
-          
-          // Initial resize
-          setTimeout(resizePixi, 0);
-          const resizeHandler = () => {
-            if (pixiApp && sprite) resizePixi();
-          };
-          window.addEventListener('resize', resizeHandler);
-          
-          // Hover animation
-          let hover = false;
-          let mouseX = 0, mouseY = 0;
-          
-          const enterHandler = () => { hover = true; };
-          const leaveHandler = () => {
-            hover = false;
-            if (!sprite) return;
-            sprite.scale.set(1, 1);
-            sprite.rotation = 0;
-            if (pixiApp) {
-              pixiApp.stage.pivot.set(0, 0);
-              pixiApp.stage.position.set(0, 0);
-              pixiApp.stage.angle = 0;
-            }
-          };
-          
-          const moveHandler = (e) => {
-            const rect = coverContainer.getBoundingClientRect();
-            mouseX = (e.clientX - rect.left) / rect.width - 0.5;
-            mouseY = (e.clientY - rect.top) / rect.height - 0.5;
-          };
-          
-          coverContainer.addEventListener('mouseenter', enterHandler);
-          coverContainer.addEventListener('mouseleave', leaveHandler);
-          coverContainer.addEventListener('mousemove', moveHandler);
-          
-          // Animation ticker
-          const tickerHandler = () => {
-            if (hover && sprite && pixiApp) {
-              sprite.scale.set(1.07, 1.07);
-              const maxAngle = 0.18;
-              sprite.rotation = -mouseX * maxAngle * 0.5;
-              pixiApp.stage.pivot.set(sprite.x, sprite.y);
-              pixiApp.stage.position.set(sprite.x, sprite.y);
-              pixiApp.stage.angle = mouseX * 8;
-            }
-          };
-          
+        // Set up resize and interaction after sprite is loaded
+        function resizePixi() {
+          const rect = coverContainer.getBoundingClientRect();
+          if (!pixiApp || !sprite) return;
+          pixiApp.renderer.resize(rect.width, rect.height);
+          sprite.x = rect.width / 2;
+          sprite.y = rect.height / 2;
+          const scale = Math.max(rect.width / texture.width, rect.height / texture.height);
+          sprite.width = texture.width * scale;
+          sprite.height = texture.height * scale;
+        }
+        
+        // Initial resize
+        setTimeout(resizePixi, 0);
+        const resizeHandler = () => {
+          if (pixiApp && sprite) resizePixi();
+        };
+        window.addEventListener('resize', resizeHandler);
+        
+        // Hover animation
+        let hover = false;
+        let mouseX = 0, mouseY = 0;
+        
+        const enterHandler = () => { hover = true; };
+        const leaveHandler = () => {
+          hover = false;
+          if (!sprite) return;
+          sprite.scale.set(1, 1);
+          sprite.rotation = 0;
           if (pixiApp) {
-            pixiApp.ticker.add(tickerHandler);
+            pixiApp.stage.pivot.set(0, 0);
+            pixiApp.stage.position.set(0, 0);
+            pixiApp.stage.angle = 0;
           }
-          
-          // Cleanup function for when the card is removed
-          const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-              mutation.removedNodes.forEach((node) => {
-                if (node === card) {
-                  window.removeEventListener('resize', resizeHandler);
-                  coverContainer.removeEventListener('mouseenter', enterHandler);
-                  coverContainer.removeEventListener('mouseleave', leaveHandler);
-                  coverContainer.removeEventListener('mousemove', moveHandler);
-                  if (pixiApp) {
-                    pixiApp.ticker.remove(tickerHandler);
-                    pixiApp.destroy(true);
-                    pixiApp = null;
-                  }
-                  observer.disconnect();
+        };
+        
+        const moveHandler = (e) => {
+          const rect = coverContainer.getBoundingClientRect();
+          mouseX = (e.clientX - rect.left) / rect.width - 0.5;
+          mouseY = (e.clientY - rect.top) / rect.height - 0.5;
+        };
+        
+        coverContainer.addEventListener('mouseenter', enterHandler);
+        coverContainer.addEventListener('mouseleave', leaveHandler);
+        coverContainer.addEventListener('mousemove', moveHandler);
+        
+        // Animation ticker
+        const tickerHandler = () => {
+          if (hover && sprite && pixiApp) {
+            sprite.scale.set(1.07, 1.07);
+            const maxAngle = 0.18;
+            sprite.rotation = -mouseX * maxAngle * 0.5;
+            pixiApp.stage.pivot.set(sprite.x, sprite.y);
+            pixiApp.stage.position.set(sprite.x, sprite.y);
+            pixiApp.stage.angle = mouseX * 8;
+          }
+        };
+        
+        if (pixiApp) {
+          pixiApp.ticker.add(tickerHandler);
+        }
+        
+        // Cleanup function for when the card is removed
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            mutation.removedNodes.forEach((node) => {
+              if (node === card) {
+                window.removeEventListener('resize', resizeHandler);
+                coverContainer.removeEventListener('mouseenter', enterHandler);
+                coverContainer.removeEventListener('mouseleave', leaveHandler);
+                coverContainer.removeEventListener('mousemove', moveHandler);
+                if (pixiApp) {
+                  pixiApp.ticker.remove(tickerHandler);
+                  pixiApp.destroy(true);
+                  pixiApp = null;
                 }
-              });
+                observer.disconnect();
+              }
             });
           });
-          
-          observer.observe(card.parentNode, { childList: true });
-        }).catch(error => {
-          console.warn('Failed to load image:', error);
-          createFallbackImage();
         });
-      } catch (error) {
-        console.warn('Failed to setup PIXI view:', error);
+        
+        observer.observe(card.parentNode, { childList: true });
+      }).catch(error => {
+        console.warn('Failed to load image:', error);
         createFallbackImage();
-      }
-    } else {
+      });
+    } catch (error) {
+      console.warn('Failed to setup PIXI view:', error);
       createFallbackImage();
     }
-    
-    function createFallbackImage() {
-      const fallbackImg = document.createElement('img');
-      fallbackImg.src = project.cover.fallback;
-      fallbackImg.alt = project.title;
-      coverContainer.appendChild(fallbackImg);
-    }
-
-    const content = document.createElement("div");
-    content.className = "card-content";
-    const title = document.createElement("h3");
-    title.textContent = project.title;
-    // Description block scrollable
-    const descScroll = document.createElement("div");
-    descScroll.className = "card-desc-scroll";
-    descScroll.textContent = isRussian ? project.description : (project.description_en || project.description);
-    content.appendChild(title);
-    content.appendChild(descScroll);
-    // Date (hidden, for sorting only)
-    const date = document.createElement("p");
-    date.className = "date";
-    date.textContent = `Дата: ${new Date(project.date).toLocaleDateString("ru-RU")}`;
-    // Actions (stick to bottom)
-    const actions = document.createElement("div");
-    actions.className = "card-actions";
-    // Play button (thinner)
-    const playButton = document.createElement("button");
-    playButton.className = "play-button thin";
-    playButton.innerHTML = isRussian ? "▶ Играть" : "▶ Play";
-    playButton.onclick = (e) => {
-      e.preventDefault();
-      openPlayableModal(project);
-    };
-    // Store Page button (thinner)
-    const storeButton = document.createElement("a");
-    storeButton.className = "store-link thin";
-    storeButton.textContent = isRussian ? "Страница в магазине" : "Store Page";
-    storeButton.target = "_blank";
-    // Device-aware store link
-    let storeUrl = project.linkStoreGoogle || project.linkStore || "";
-    if (project.linkStoreAppStore && /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent)) {
-      storeUrl = project.linkStoreAppStore;
-    }
-    storeButton.href = storeUrl || "#";
-    if (!storeUrl) storeButton.style.display = "none";
-    actions.appendChild(playButton);
-    actions.appendChild(storeButton);
-    content.appendChild(date);
-    content.appendChild(actions);
-    card.appendChild(coverContainer);
-    card.appendChild(content);
-    container.appendChild(card);
+  } else {
+    createFallbackImage();
   }
+  
+  function createFallbackImage() {
+    const fallbackImg = document.createElement('img');
+    fallbackImg.src = project.cover.fallback;
+    fallbackImg.alt = project.title;
+    coverContainer.appendChild(fallbackImg);
+  }
+
+  const content = document.createElement("div");
+  content.className = "card-content";
+  const title = document.createElement("h3");
+  title.textContent = project.title;
+  // Description block scrollable
+  const descScroll = document.createElement("div");
+  descScroll.className = "card-desc-scroll";
+  descScroll.textContent = isRussian ? project.description : (project.description_en || project.description);
+  content.appendChild(title);
+  content.appendChild(descScroll);
+  // Date (hidden, for sorting only)
+  const date = document.createElement("p");
+  date.className = "date";
+  date.textContent = `Дата: ${new Date(project.date).toLocaleDateString("ru-RU")}`;
+  // Actions (stick to bottom)
+  const actions = document.createElement("div");
+  actions.className = "card-actions";
+  // Play button (thinner)
+  const playButton = document.createElement("button");
+  playButton.className = "play-button thin";
+  playButton.innerHTML = isRussian ? "▶ Играть" : "▶ Play";
+  playButton.onclick = (e) => {
+    e.preventDefault();
+    openPlayableModal(project);
+  };
+  // Store Page button (thinner)
+  const storeButton = document.createElement("a");
+  storeButton.className = "store-link thin";
+  storeButton.textContent = isRussian ? "Страница в магазине" : "Store Page";
+  storeButton.target = "_blank";
+  // Device-aware store link
+  let storeUrl = project.linkStoreGoogle || project.linkStore || "";
+  if (project.linkStoreAppStore && /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent)) {
+    storeUrl = project.linkStoreAppStore;
+  }
+  storeButton.href = storeUrl || "#";
+  if (!storeUrl) storeButton.style.display = "none";
+  actions.appendChild(playButton);
+  actions.appendChild(storeButton);
+  content.appendChild(date);
+  content.appendChild(actions);
+  card.appendChild(coverContainer);
+  card.appendChild(content);
+  container.appendChild(card);
+}
 
 function is3D(project) {
   return project.tags && project.tags.some(tag => tag.toLowerCase().includes('3d'));
@@ -285,6 +285,7 @@ function isPlayable(project) {
 function isBanner(project) {
   return project.playable && project.playable.type === 'banner';
 }
+
 // Playable modal logic with tags below iframe
 function openPlayableModal(project) {
   const modal = document.getElementById("modal");
@@ -308,8 +309,6 @@ function openPlayableModal(project) {
     }
   }
 }
-
-
 
 function setupProjectTabs() {
   const tabs = document.querySelectorAll('.tab');
@@ -336,6 +335,13 @@ function setupProjectTabs() {
   tabs[0].classList.add('active');
 }
 
+// Update page content based on language
+function updatePageContent() {
+  document.querySelectorAll('[data-ru][data-en]').forEach(el => {
+    el.textContent = isRussian ? el.dataset.ru : el.dataset.en;
+  });
+}
+
 // Debounce helper function
 function debounce(func, wait) {
   let timeout;
@@ -347,14 +353,6 @@ function debounce(func, wait) {
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
   };
-}
-
-// Update page content based on language
-function updatePageContent() {
-  // Update text content for language-specific elements
-  document.querySelectorAll('[data-ru][data-en]').forEach(el => {
-    el.textContent = isRussian ? el.dataset.ru : el.dataset.en;
-  });
 }
 
 // Show/hide sticky header on scroll (debounced)
@@ -390,98 +388,103 @@ function initializePixiTrail() {
   if (!window.PIXI) return;
 
   const trailTextureUrl = 'assets/trail.PNG';
-  const app = new PIXI.Application({
-    width: window.innerWidth,
-    height: window.innerHeight,
-    backgroundAlpha: 0,
-    resolution: window.devicePixelRatio || 1,
-    autoDensity: true,
-    antialias: true
-  });
-
-  app.view.style.position = 'fixed';
-  app.view.style.left = '0';
-  app.view.style.top = '0';
-  app.view.style.width = '100vw';
-  app.view.style.height = '100vh';
-  app.view.style.pointerEvents = 'none';
-  app.view.style.zIndex = '999';
-  document.body.appendChild(app.view);
-
-  // Handle resize
-  const handleResize = () => {
-    app.renderer.resize(window.innerWidth, window.innerHeight);
-  };
-  window.addEventListener('resize', handleResize);
-
-  // Trail logic
+  let app, ticker;
   const trailPoints = [];
   const maxTrail = 32;
-  let lastX = window.innerWidth/2, lastY = window.innerHeight/2;
+  let lastX = window.innerWidth/2;
+  let lastY = window.innerHeight/2;
   
-  const handleMouseMove = e => {
+  function setupPixiApp() {
+    app = new PIXI.Application({
+      width: window.innerWidth,
+      height: window.innerHeight,
+      backgroundAlpha: 0,
+      resolution: window.devicePixelRatio || 1,
+      autoDensity: true,
+      antialias: true
+    });
+
+    app.view.style.position = 'fixed';
+    app.view.style.left = '0';
+    app.view.style.top = '0';
+    app.view.style.width = '100vw';
+    app.view.style.height = '100vh';
+    app.view.style.pointerEvents = 'none';
+    app.view.style.zIndex = '999';
+    document.body.appendChild(app.view);
+  }
+
+  function handleMouseMove(e) {
     lastX = e.clientX;
     lastY = e.clientY;
-  };
-  document.addEventListener('mousemove', handleMouseMove);
+  }
 
-  // Load trail texture and setup animation
-  try {
-    const texture = PIXI.Texture.from(trailTextureUrl);
-    texture.baseTexture.on('error', (error) => {
-      console.warn('Failed to load trail texture:', error);
-      app.destroy(true);
-      return;
-    });
+  function handleResize() {
+    if (app) app.renderer.resize(window.innerWidth, window.innerHeight);
+  }
 
-    // Trail animation ticker
-  const ticker = () => {
-    // Add new point
-    trailPoints.push({
-      x: lastX,
-      y: lastY,
-      alpha: 1,
-      sprite: null
-    });
-
-    if (trailPoints.length > maxTrail) {
-      const old = trailPoints.shift();
-      if (old.sprite) {
-        app.stage.removeChild(old.sprite);
-        old.sprite.destroy();
-      }
-    }
-
-    // Draw trail
-    trailPoints.forEach((pt, i) => {
-      if (!pt.sprite) {
-        pt.sprite = new PIXI.Sprite(texture);
-        pt.sprite.anchor.set(0.5);
-        app.stage.addChild(pt.sprite);
-      }
-      pt.sprite.x = pt.x;
-      pt.sprite.y = pt.y;
-      pt.sprite.alpha = (i+1)/trailPoints.length * 0.7;
-      pt.sprite.scale.set(0.5 + 0.7 * (i+1)/trailPoints.length);
-    });
-  };
-
-  // Add ticker to the app
-  app.ticker.add(ticker);
-
-  // Cleanup function
-  window.addEventListener('unload', () => {
+  function cleanup() {
     document.removeEventListener('mousemove', handleMouseMove);
     window.removeEventListener('resize', handleResize);
-    app.ticker.remove(ticker);
-    app.destroy(true);
+    if (app && app.ticker && ticker) app.ticker.remove(ticker);
     trailPoints.forEach(pt => {
       if (pt.sprite) pt.sprite.destroy();
     });
-  });
-  } catch (error) {
-    console.warn('Failed to initialize PIXI trail:', error);
     if (app) app.destroy(true);
+  }
+
+  function startTrailAnimation(texture) {
+    ticker = () => {
+      // Add new point
+      trailPoints.push({
+        x: lastX,
+        y: lastY,
+        alpha: 1,
+        sprite: null
+      });
+
+      if (trailPoints.length > maxTrail) {
+        const old = trailPoints.shift();
+        if (old.sprite) {
+          app.stage.removeChild(old.sprite);
+          old.sprite.destroy();
+        }
+      }
+
+      // Draw trail
+      trailPoints.forEach((pt, i) => {
+        if (!pt.sprite) {
+          pt.sprite = new PIXI.Sprite(texture);
+          pt.sprite.anchor.set(0.5);
+          app.stage.addChild(pt.sprite);
+        }
+        pt.sprite.x = pt.x;
+        pt.sprite.y = pt.y;
+        pt.sprite.alpha = (i + 1) / trailPoints.length * 0.7;
+        pt.sprite.scale.set(0.5 + 0.7 * (i + 1) / trailPoints.length);
+      });
+    };
+    
+    if (app && app.ticker) app.ticker.add(ticker);
+  }
+
+  // Initialize and set up event listeners
+  setupPixiApp();
+  document.addEventListener('mousemove', handleMouseMove);
+  window.addEventListener('resize', handleResize);
+  window.addEventListener('unload', cleanup);
+
+  // Load and initialize texture
+  try {
+    const texture = PIXI.Texture.from(trailTextureUrl);
+    texture.baseTexture.once('error', (error) => {
+      console.warn('Failed to load trail texture:', error);
+      cleanup();
+    });
+    texture.baseTexture.once('loaded', () => startTrailAnimation(texture));
+  } catch (error) {
+    console.warn('Failed to initialize trail effect:', error);
+    cleanup();
   }
 }
 
