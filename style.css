@@ -1,3 +1,43 @@
+/* Card description scrollable */
+.card-desc-scroll {
+  max-height: 60px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  color: #555;
+  padding-right: 4px;
+}
+
+/* Thinner card action buttons */
+.play-button.thin {
+  padding: 8px 0 7px 0;
+  font-size: 1rem;
+  border-radius: 6px;
+  margin-bottom: 2px;
+}
+.store-link.thin {
+  padding: 6px 0 5px 0;
+  font-size: 0.95rem;
+  border-radius: 6px;
+}
+
+/* Modal tags below playable */
+.modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  justify-content: center;
+}
+.modal-tag {
+  background: #8D99AE;
+  color: #EDF2F4;
+  border-radius: 12px;
+  padding: 5px 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
 /* Цвета: 
    Тёмный фон: #2B2D42 
    Серый: #8D99AE 
@@ -186,10 +226,24 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: none;
+  border-radius: 50%;
+  overflow: visible;
+  box-shadow: none;
+}
+
+.photo-ellipse {
+  width: 100%;
+  height: 100%;
   background: #EDF2F4;
   border-radius: 50%;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: width 0.3s, height 0.3s, min-width 0.3s, min-height 0.3s;
+  overflow: hidden;
+}
 }
 .header-photo img {
   width: 200px;
@@ -216,13 +270,15 @@ h2 {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(43,45,66,0.75); /* half-transparent */
+  background: rgba(43,45,66,0.5); /* half-transparent */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   transition: all 0.35s cubic-bezier(.4,0,.2,1);
   box-shadow: 0 2px 12px rgba(0,0,0,0.10);
 }
 #main-header .header-photo,
+/* Animate ellipse and image */
+#main-header .header-photo .photo-ellipse,
 #main-header .header-photo img {
   transition: width 0.3s, height 0.3s, min-width 0.3s, min-height 0.3s;
 }
@@ -230,6 +286,12 @@ h2 {
   padding: 10px 0 !important;
 }
 #main-header.shrink .header-photo {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+}
+#main-header.shrink .header-photo .photo-ellipse {
   width: 48px !important;
   height: 48px !important;
   min-width: 48px !important;
@@ -266,10 +328,58 @@ h2 {
     min-width: 36px !important;
     min-height: 36px !important;
   }
+  #main-header.shrink .header-photo .photo-ellipse {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+  }
   #main-header.shrink .header-photo img {
     width: 36px !important;
     height: 36px !important;
   }
+/* CV Spoiler (details/summary) styles */
+.cv-spoiler {
+  margin-bottom: 28px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  background: #fff;
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+}
+.cv-spoiler[open] {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.cv-spoiler summary {
+  cursor: pointer;
+  padding: 0 20px;
+  outline: none;
+  user-select: none;
+  background: #EDF2F4;
+  border-bottom: 1px solid #8D99AE;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+}
+.cv-spoiler summary:hover {
+  background: #f5f7fa;
+}
+.cv-spoiler summary h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #D80032;
+}
+.cv-spoiler[open] > .cv-content {
+  animation: cv-expand 0.4s cubic-bezier(.4,0,.2,1);
+}
+.cv-content {
+  transition: max-height 0.4s cubic-bezier(.4,0,.2,1), padding 0.3s;
+}
+@keyframes cv-expand {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 }
 
 /* CV Sections Styling */

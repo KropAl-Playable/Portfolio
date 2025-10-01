@@ -43,15 +43,27 @@ function updatePageContent() {
     .then(cv => {
       // Update meta information
       document.querySelector('h1').textContent = cv.meta.name;
-      document.querySelector('header p').textContent = cv.meta.title;
+      // Update job title in header-contacts
+      const contacts = document.querySelector('.header-contacts p');
+      if (contacts) {
+        // Remove job title from contacts if present
+        contacts.childNodes.forEach(node => {
+          if (node.nodeType === Node.TEXT_NODE && node.textContent.includes('Team Lead')) {
+            node.textContent = '';
+          }
+        });
+      }
       
       // Update section titles
       document.querySelectorAll('[data-ru][data-en]').forEach(el => {
-        el.textContent = isRussian ? el.dataset.ru : el.dataset.en;
+        if (el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'H4') {
+          el.textContent = isRussian ? el.dataset.ru : el.dataset.en;
+        }
       });
       
-      // Update Summary
-      document.querySelector('#about .summary').textContent = cv.summary;
+  // Update Summary
+  const aboutSummary = document.querySelector('#about .summary') || document.querySelector('.cv-spoiler .summary');
+  if (aboutSummary) aboutSummary.textContent = cv.summary;
       
       // Update Skills
       Object.entries(cv.skills).forEach(([category, skills]) => {
@@ -147,14 +159,6 @@ function renderProjects() {
     title.textContent = project.title;
     const desc = document.createElement("p");
     desc.textContent = isRussian ? project.description : (project.description_en || project.description);
-    // 📌 Теги / жанры
-    const tags = document.createElement("div");
-    tags.className = "tags";
-    project.tags.forEach(tag => {
-      const span = document.createElement("span");
-      span.textContent = tag;
-      tags.appendChild(span);
-    });
     // Date (hidden, for sorting only)
     const date = document.createElement("p");
     date.className = "date";
@@ -162,19 +166,17 @@ function renderProjects() {
     // Actions (stick to bottom)
     const actions = document.createElement("div");
     actions.className = "card-actions";
-    // Play button (large, on top)
+    // Play button (thinner)
     const playButton = document.createElement("button");
-    playButton.className = "play-button";
+    playButton.className = "play-button thin";
     playButton.innerHTML = isRussian ? "▶ Играть" : "▶ Play";
     playButton.onclick = (e) => {
       e.preventDefault();
-      const iframe = document.getElementById("game-frame");
-      iframe.src = project.playable.src;
-      modal.style.display = "block";
+      openPlayableModal(project);
     };
-    // Store Page button (smaller, below)
+    // Store Page button (thinner)
     const storeButton = document.createElement("a");
-    storeButton.className = "store-link";
+    storeButton.className = "store-link thin";
     storeButton.textContent = isRussian ? "Страница в магазине" : "Store Page";
     storeButton.target = "_blank";
     // Device-aware store link
@@ -187,13 +189,39 @@ function renderProjects() {
     actions.appendChild(playButton);
     actions.appendChild(storeButton);
     content.appendChild(title);
-    content.appendChild(desc);
-    content.appendChild(tags);
+    // Description block scrollable
+    const descScroll = document.createElement("div");
+    descScroll.className = "card-desc-scroll";
+    descScroll.textContent = isRussian ? project.description : (project.description_en || project.description);
+    content.appendChild(descScroll);
     content.appendChild(date);
     content.appendChild(actions);
     card.appendChild(coverContainer);
     card.appendChild(content);
     container.appendChild(card);
+// Playable modal logic with tags below iframe
+function openPlayableModal(project) {
+  const modal = document.getElementById("modal");
+  const iframe = document.getElementById("game-frame");
+  const tagBlock = document.getElementById("modal-tags");
+  iframe.src = project.playable.src;
+  modal.style.display = "block";
+  // Show tags below iframe
+  if (tagBlock) {
+    tagBlock.innerHTML = '';
+    if (project.tags && project.tags.length) {
+      project.tags.forEach(tag => {
+        const span = document.createElement('span');
+        span.className = 'modal-tag';
+        span.textContent = tag;
+        tagBlock.appendChild(span);
+      });
+      tagBlock.style.display = 'flex';
+    } else {
+      tagBlock.style.display = 'none';
+    }
+  }
+}
   });
 }
 
@@ -247,4 +275,41 @@ document.addEventListener("DOMContentLoaded", () => {
   updatePageContent();
   loadProjects();
   setupProjectTabs();
+
+  // Portfolio link scrolls to #projects
+  const portfolioLink = document.querySelector('.portfolio-link');
+  if (portfolioLink) {
+    portfolioLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      const section = document.getElementById('projects');
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+
+  // Spoiler animation for CV blocks
+  document.querySelectorAll('.cv-spoiler').forEach(details => {
+    const content = details.querySelector('.cv-content');
+    if (!content) return;
+    // Set initial max-height
+    if (details.open) {
+      content.style.maxHeight = content.scrollHeight + 'px';
+    } else {
+      content.style.maxHeight = '0px';
+    }
+    details.addEventListener('toggle', function() {
+      if (details.open) {
+        content.style.display = 'block';
+        requestAnimationFrame(() => {
+          content.style.maxHeight = content.scrollHeight + 'px';
+        });
+      } else {
+        content.style.maxHeight = '0px';
+        setTimeout(() => { content.style.display = 'none'; }, 400);
+      }
+    });
+    // Smooth transition
+    content.style.transition = 'max-height 0.4s cubic-bezier(.4,0,.2,1), padding 0.3s';
+  });
 });

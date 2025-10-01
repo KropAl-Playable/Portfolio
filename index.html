@@ -10,7 +10,9 @@
   <header id="main-header">
     <div class="container header-flex">
       <div class="header-photo">
-        <img src="assets/photo-placeholder.png" alt="Profile Photo" width="200" height="200" />
+        <div class="photo-ellipse">
+          <img src="assets/photo-placeholder.png" alt="Profile Photo" width="200" height="200" />
+        </div>
       </div>
       <div class="header-main">
         <h1>Алексей Кропачев</h1>
@@ -19,8 +21,7 @@
       <div class="header-contacts">
         <p class="contacts">
           📍 Киров, РФ | ✉️ <a href="mailto:alienhead891@gmail.com">alienhead891@gmail.com</a> | 🔗 
-          <a href="#" target="_blank">LinkedIn</a> / 
-          <a href="#" target="_blank">Портфолио</a>
+          <a href="#projects" class="portfolio-link">Портфолио</a>
         </p>
       </div>
     </div>
@@ -28,76 +29,86 @@
 
   <main class="container">
     <section id="about">
-      <h2 data-ru="О себе" data-en="About">О себе</h2>
-      <div class="cv-content">
-        <p class="summary"></p>
-      </div>
+      <details class="cv-spoiler" open>
+        <summary><h2 data-ru="О себе" data-en="About">О себе</h2></summary>
+        <div class="cv-content">
+          <p class="summary"></p>
+        </div>
+      </details>
     </section>
 
     <section id="skills">
-      <h2 data-ru="Навыки" data-en="Skills">Навыки</h2>
-      <div class="cv-content skills-grid">
-        <div class="skill-category" id="playables">
-          <h3 data-ru="Разработка" data-en="Playables & Code">Разработка</h3>
-          <ul></ul>
+      <details class="cv-spoiler" open>
+        <summary><h2 data-ru="Навыки" data-en="Skills">Навыки</h2></summary>
+        <div class="cv-content skills-grid">
+          <div class="skill-category" id="playables">
+            <h3 data-ru="Разработка" data-en="Playables & Code">Разработка</h3>
+            <ul></ul>
+          </div>
+          <div class="skill-category" id="art_and_ui">
+            <h3 data-ru="Арт и UI" data-en="Art & UI">Арт и UI</h3>
+            <ul></ul>
+          </div>
+          <div class="skill-category" id="tools">
+            <h3 data-ru="Инструменты" data-en="Tools">Инструменты</h3>
+            <ul></ul>
+          </div>
+          <div class="skill-category" id="analytics_and_pipeline">
+            <h3 data-ru="Аналитика и процессы" data-en="Analytics & Pipeline">Аналитика и процессы</h3>
+            <ul></ul>
+          </div>
+          <div class="skill-category" id="soft">
+            <h3 data-ru="Soft skills" data-en="Soft Skills">Soft skills</h3>
+            <ul></ul>
+          </div>
         </div>
-        <div class="skill-category" id="art_and_ui">
-          <h3 data-ru="Арт и UI" data-en="Art & UI">Арт и UI</h3>
-          <ul></ul>
-        </div>
-        <div class="skill-category" id="tools">
-          <h3 data-ru="Инструменты" data-en="Tools">Инструменты</h3>
-          <ul></ul>
-        </div>
-        <div class="skill-category" id="analytics_and_pipeline">
-          <h3 data-ru="Аналитика и процессы" data-en="Analytics & Pipeline">Аналитика и процессы</h3>
-          <ul></ul>
-        </div>
-        <div class="skill-category" id="soft">
-          <h3 data-ru="Soft skills" data-en="Soft Skills">Soft skills</h3>
-          <ul></ul>
-        </div>
-      </div>
+      </details>
     </section>
 
     <section id="experience">
-      <h2 data-ru="Опыт работы" data-en="Professional Experience">Опыт работы</h2>
-      <div class="cv-content">
-        <div class="main-experience"></div>
-        <div class="earlier-experience">
-          <h3 data-ru="Ранний опыт" data-en="Earlier Experience">Ранний опыт</h3>
+      <details class="cv-spoiler" open>
+        <summary><h2 data-ru="Опыт работы" data-en="Professional Experience">Опыт работы</h2></summary>
+        <div class="cv-content">
+          <div class="main-experience"></div>
+          <div class="earlier-experience">
+            <h3 data-ru="Ранний опыт" data-en="Earlier Experience">Ранний опыт</h3>
+          </div>
         </div>
-      </div>
+      </details>
     </section>
 
     <section id="education">
-      <h2 data-ru="Образование" data-en="Education & Courses">Образование</h2>
-      <div class="cv-content">
-        <div class="education-list"></div>
-        <div class="courses-list">
-          <h3 data-ru="Курсы" data-en="Courses">Курсы</h3>
-          <ul></ul>
+      <details class="cv-spoiler" open>
+        <summary><h2 data-ru="Образование" data-en="Education & Courses">Образование</h2></summary>
+        <div class="cv-content">
+          <div class="education-list"></div>
+          <div class="courses-list">
+            <h3 data-ru="Курсы" data-en="Courses">Курсы</h3>
+            <ul></ul>
+          </div>
         </div>
-      </div>
+      </details>
     </section>
 
     <section id="additional">
-      <h2 data-ru="Дополнительная информация" data-en="Additional Information">Дополнительная информация</h2>
-      <div class="cv-content">
-        <div class="languages">
-          <h3 data-ru="Языки" data-en="Languages">Языки</h3>
-          <ul></ul>
+      <details class="cv-spoiler" open>
+        <summary><h2 data-ru="Дополнительная информация" data-en="Additional Information">Дополнительная информация</h2></summary>
+        <div class="cv-content">
+          <div class="languages">
+            <h3 data-ru="Языки" data-en="Languages">Языки</h3>
+            <ul></ul>
+          </div>
+          <div class="hobbies">
+            <h3 data-ru="Интересы" data-en="Hobbies & Interests">Интересы</h3>
+            <ul></ul>
+          </div>
+          <div class="extra">
+            <h3 data-ru="Дополнительно" data-en="Additional">Дополнительно</h3>
+            <p class="availability"></p>
+            <p class="references"></p>
+          </div>
         </div>
-        <div class="hobbies">
-          <h3 data-ru="Интересы" data-en="Hobbies & Interests">Интересы</h3>
-          <ul></ul>
-        </div>
-        <div class="extra">
-          <h3 data-ru="Дополнительно" data-en="Additional">Дополнительно</h3>
-          <p class="availability"></p>
-          <p class="references"></p>
-        </div>
-      </div>
+      </details>
     </section>
 
     <section id="projects">
@@ -113,6 +124,17 @@
         </div>
       </div>
       <div id="project-list" class="grid"></div>
+
+      <!-- Playable Modal -->
+      <div id="modal" class="modal" style="display:none;">
+        <div class="modal-content">
+          <span class="close-button" onclick="this.closest('.modal').style.display='none';document.getElementById('game-frame').src='';">&times;</span>
+          <div class="iframe-container">
+            <iframe id="game-frame" allowfullscreen></iframe>
+          </div>
+          <div id="modal-tags" class="modal-tags"></div>
+        </div>
+      </div>
     </section>
   </main>
 
