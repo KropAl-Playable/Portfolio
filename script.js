@@ -2,92 +2,99 @@
 const userLang = navigator.language || navigator.userLanguage;
 const isRussian = userLang.toLowerCase().startsWith('ru');
 
-// Parse CV sections from text
-function parseCVSections(text) {
-  const sections = {};
-  let currentSection = '';
-  let content = [];
+// Format a job entry
+function formatJobEntry(job) {
+  const responsibilities = job.responsibilities ? 
+    `<div class="responsibilities">
+      <h4 data-ru="Обязанности" data-en="Responsibilities">Responsibilities</h4>
+      <ul>${job.responsibilities.map(r => `<li>${r}</li>`).join('')}</ul>
+     </div>` : '';
   
-  text.split('\n').forEach(line => {
-    if (line.match(/^[A-Za-z& ]+$/)) {
-      if (currentSection) {
-        sections[currentSection] = content.join('\n');
-        content = [];
-      }
-      currentSection = line.trim();
-    } else if (line.trim() && currentSection) {
-      content.push(line);
-    }
-  });
-  
-  if (currentSection && content.length) {
-    sections[currentSection] = content.join('\n');
-  }
-  
-  return sections;
+  const achievements = job.achievements ? 
+    `<div class="achievements">
+      <h4 data-ru="Достижения" data-en="Achievements">Achievements</h4>
+      <ul>${job.achievements.map(a => `<li>${a}</li>`).join('')}</ul>
+     </div>` : '';
+
+  return `
+    <div class="job-entry">
+      <div class="job-title">${job.role}</div>
+      <div class="job-company">${job.company}</div>
+      <div class="job-date">${job.start} — ${job.end}</div>
+      ${responsibilities}
+      ${achievements}
+    </div>
+  `;
 }
 
-// Convert text content to HTML
-function formatCVContent(content) {
-  return content
-    .split('\n\n')
-    .map(paragraph => `<p>${paragraph.trim()}</p>`)
-    .join('');
-}
-
-// Format experience section
-function formatExperience(content) {
-  const entries = content.split(/\n(?=[A-Za-z]+ — )/);
-  return entries.map(entry => {
-    const [title, ...rest] = entry.split('\n');
-    const [role, period] = title.split(' — ');
-    return `
-      <div class="job-entry">
-        <div class="job-title">${role}</div>
-        <div class="job-date">${period}</div>
-        ${formatCVContent(rest.join('\n'))}
-      </div>
-    `;
-  }).join('');
+// Format earlier experience entry
+function formatEarlierJob(job) {
+  return `
+    <div class="earlier-job">
+      <strong>${job.role}</strong> at ${job.company} (${job.period}) — ${job.notes}
+    </div>
+  `;
 }
 
 // Update page content based on language
 function updatePageContent() {
-  // Update header
-  document.querySelector('h1').textContent = isRussian ? 'Алексей Кропачев' : 'Alexey Kropachev';
-  document.querySelector('header p').textContent = 'Senior Playable Ads Developer / Team Lead';
-  
-  // Update section titles
-  document.querySelectorAll('[data-ru][data-en]').forEach(el => {
-    el.textContent = isRussian ? el.dataset.ru : el.dataset.en;
-  });
-  
-  // Load and update CV sections
-  fetch(isRussian ? 'CV_RU.txt' : 'CV_EN.txt')
-    .then(response => response.text())
-    .then(text => {
-      const sections = parseCVSections(text);
+  fetch(isRussian ? 'cv_ru.json' : 'cv_en.json')
+    .then(response => response.json())
+    .then(cv => {
+      // Update meta information
+      document.querySelector('h1').textContent = cv.meta.name;
+      document.querySelector('header p').textContent = cv.meta.title;
+      
+      // Update section titles
+      document.querySelectorAll('[data-ru][data-en]').forEach(el => {
+        el.textContent = isRussian ? el.dataset.ru : el.dataset.en;
+      });
       
       // Update Summary
-      document.querySelector('#about p').textContent = sections['Summary'];
+      document.querySelector('#about .summary').textContent = cv.summary;
       
-      // Update Professional Experience
-      document.querySelector('#experience .cv-content').innerHTML = 
-        formatExperience(sections['Professional Experience']);
+      // Update Skills
+      Object.entries(cv.skills).forEach(([category, skills]) => {
+        const ul = document.querySelector(`#${category} ul`);
+        if (ul) {
+          ul.innerHTML = skills.map(skill => `<li>${skill}</li>`).join('');
+        }
+      });
+      
+      // Update Experience
+      const mainExp = document.querySelector('#experience .main-experience');
+      mainExp.innerHTML = cv.experience.map(formatJobEntry).join('');
+      
+      const earlierExp = document.querySelector('#experience .earlier-experience');
+      earlierExp.innerHTML += cv.earlier_experience.map(formatEarlierJob).join('');
       
       // Update Education
-      document.querySelector('#education .cv-content').innerHTML = 
-        formatCVContent(sections['Education & Courses']);
+      const eduList = document.querySelector('#education .education-list');
+      eduList.innerHTML = cv.education.map(edu => `
+        <div class="education-entry">
+          <h4>${edu.institution}</h4>
+          <p>${edu.faculty}</p>
+          <p class="notes">${edu.notes}</p>
+        </div>
+      `).join('');
       
-      // Update Additional sections
-      document.querySelector('#additional .languages .cv-content').innerHTML = 
-        formatCVContent(sections['Languages']);
+      const coursesList = document.querySelector('#education .courses-list ul');
+      coursesList.innerHTML = cv.courses.map(course => `<li>${course}</li>`).join('');
       
-      document.querySelector('#additional .hobbies .cv-content').innerHTML = 
-        formatCVContent(sections['Hobbies & Interests']);
+      // Update Languages
+      const langList = document.querySelector('#additional .languages ul');
+      langList.innerHTML = cv.languages.map(lang => 
+        `<li>${lang.lang} — ${lang.level}</li>`
+      ).join('');
       
-      document.querySelector('#additional .extra .cv-content').innerHTML = 
-        formatCVContent(sections['Additional']);
+      // Update Hobbies
+      const hobbiesList = document.querySelector('#additional .hobbies ul');
+      hobbiesList.innerHTML = cv.hobbies.map(hobby => `<li>${hobby}</li>`).join('');
+      
+      // Update Additional Info
+      const extra = document.querySelector('#additional .extra');
+      extra.querySelector('.availability').textContent = cv.additional.availability;
+      extra.querySelector('.references').textContent = cv.additional.references;
     });
 }
 

@@ -166,8 +166,59 @@ h2 {
   left: 0;
 }
 
+/* Skills Grid */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.skill-category {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.skill-category h3 {
+  color: #EF233C;
+  font-size: 1.1em;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #EDF2F4;
+}
+
+.skill-category ul {
+  margin: 0;
+  padding: 0;
+}
+
+.skill-category li {
+  margin-bottom: 6px;
+  padding-left: 15px;
+  font-size: 0.95em;
+}
+
+.skill-category li:before {
+  content: "→";
+  color: #8D99AE;
+}
+
+/* Experience and Additional Sections */
 .languages, .hobbies, .extra {
   margin-bottom: 30px;
+}
+
+.earlier-experience {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #8D99AE;
+}
+
+.courses-list {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #8D99AE;
 }
 
 .job-entry {

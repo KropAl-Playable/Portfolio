@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "name": "First Last",
+    "title": "Senior Playable Ads Developer · Team Lead",
+    "location": "Europe (Warsaw timezone)",
+    "email": "your.email@example.com",
+    "phone": "+44 7700 000000",
+    "linkedin": "https://www.linkedin.com/in/yourprofile",
+    "portfolio": "https://your-portfolio.example.com",
+    "version": "1.0",
+    "updated": "2025-10-01"
+  },
+  "summary": "Senior Playable Ads Developer with 5+ years of experience in gamedev and adtech, combining hands-on production (Cocos Creator, CreateJS) with pipeline design, asset optimization and cross-functional leadership. Strong creative sensibility and player-first approach: I turn game assets and concepts into compact, high-quality interactive ads, build in-house production processes, and mentor teams to deliver repeatable results.",
+  "skills": {
+    "playables": ["Cocos Creator (mid)", "TypeScript (mid)", "CreateJS / Adobe Animate (mid)", "HTML5 (mid)"],
+    "art_and_ui": ["Blender (basic, asset optimization)", "Photoshop", "Frame-by-frame animation", "Sprite workflows"],
+    "tools": ["Figma (basic)", "Unity (basic)", "Unreal Engine 4 (basic)", "Miro (basic)"],
+    "analytics_and_pipeline": ["Creative metrics interpretation", "A/B test workflow", "In-house pipeline design", "Asset optimization for web"],
+    "soft": ["Team leadership", "Mentoring", "Documentation & guides", "Cross-team communication", "Facilitation"]
+  },
+  "experience": [
+    {
+      "company": "ChillBase",
+      "role": "Senior Playable Ads Developer",
+      "start": "2025-04",
+      "end": "Present",
+      "responsibilities": [
+        "Full-cycle production of playable ads using Cocos Creator: concept, prototyping, build, delivery.",
+        "3D asset work in Blender: model optimization, UV baking, texture setup and simple animation work.",
+        "UI/UX design and rapid prototyping for short interactive experiences.",
+        "Asset optimization: atlasing, spritesheet generation, LOD, texture compression strategies.",
+        "Localization readiness and dynamic language support for UI and in-play text.",
+        "Adaptation of builds to ad networks (size limits, autoplay/mute rules).",
+        "Close collaboration with marketing and analytics: tracking KPIs, generating hypotheses and test variants."
+      ],
+      "achievements": [
+        "Designed and implemented an in-house playable production pipeline with templates and checklists.",
+        "Authored developer and QA guides that standardized builds and reduced rework.",
+        "Assembled a playable-ready asset library from game resources, accelerating prototyping.",
+        "Delivered 10 high-quality playable creatives (excluding minor A/B / geo variants)."
+      ]
+    },
+    {
+      "company": "HotSiberians",
+      "role": "Middle → Lead Playable Ads Developer",
+      "start": "2022-04",
+      "end": "2025-03",
+      "responsibilities": [
+        "Scriptwriting and creative concepting for short ad flows (5–30s focus).",
+        "3D modelling, retopology and texture baking for web performance.",
+        "2D frame-by-frame animation and spritesheet production.",
+        "Mechanics and interaction prototyping (Cocos Creator / TypeScript).",
+        "Asset packaging and optimization for ad networks.",
+        "Localization and multi-language builds.",
+        "Weekly competitor benchmarking: deconstruction calls, extracting technical and narrative techniques and turning them into testable hypotheses.",
+        "Mentoring junior developers and coordinating designers and animators."
+      ],
+      "achievements": [
+        "Led transition of playable production to full 3D, improving visual fidelity.",
+        "Defined pipeline and specification templates (TЗ) that reduced handoff friction.",
+        "Introduced TypeScript and internal best practices for Cocos Creator builds.",
+        "Established recurring competitive analysis sessions feeding ideation & test roadmap."
+      ]
+    },
+    {
+      "company": "Otklyk ADV",
+      "role": "HTML5 Designer / Junior Playable Developer",
+      "start": "2020-09",
+      "end": "2022-04",
+      "responsibilities": [
+        "Produced 2D HTML5 playables and animated banners (CreateJS / Adobe Animate).",
+        "Wrote micro-scripts and scenarios for short ad formats.",
+        "Performed hand-drawn frame-by-frame animation and spritesheet assembly.",
+        "Adapted creatives to ad networks and different placements (responsive/fixed sizes).",
+        "Basic asset optimization to meet strict size and performance budgets."
+      ],
+      "achievements": [
+        "Delivered multiple interactive banners and playable proofs while consistently meeting size budgets.",
+        "Built competence in manual animation pipelines that later informed 3D transitions."
+      ]
+    }
+  ],
+  "earlier_experience": [
+    {"company":"Nord","role":"Designer-consultant","period":"2019-01 — 2019-07","notes":"Outdoor advertising design and client consulting."},
+    {"company":"OOO Pechatnik","role":"Head of Post-Print Dept","period":"2017-09 — 2018-12","notes":"Led 4 people, implemented CRM, halved turnaround times for repeat clients."},
+    {"company":"Freelance","role":"Designer/Artist","period":"2016-09 — 2017-08","notes":"Remote freelance design and illustration."},
+    {"company":"OOO Printshop","role":"Designer","period":"2013-02 — 2016-08","notes":"POS materials, branding, production workflows."}
+  ],
+  "education": [
+    {"institution":"Vyatka State Humanitarian University","faculty":"Fine Arts & Graphic Design","notes":"2 years completed (unfinished)"}
+  ],
+  "courses": [
+    "Game Analytics — devtodev (2019)",
+    "Basics of Figma (2020)",
+    "Basics of Unreal Engine 4 (2020)",
+    "Unity Basics (2022)"
+  ],
+  "languages": [
+    {"lang":"Russian","level":"Native"},
+    {"lang":"English","level":"B1 (Intermediate)"},
+    {"lang":"Italian","level":"A1 (Basic)"},
+    {"lang":"Greek","level":"A1 (Basic)"}
+  ],
+  "hobbies": [
+    "Playing and analysing games (roguelikes, RPGs, strategy) — source of inspiration for mechanics.",
+    "Digital painting and illustration — participated in themed art contests.",
+    "Experimenting with small tech demos and physics effects for short interactive creatives."
+  ],
+  "additional": {
+    "availability": "Open to remote and hybrid roles; open to relocation for the right opportunity.",
+    "references": "Available on request."
+  }
+}
