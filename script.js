@@ -4,6 +4,9 @@ async function loadProjects() {
 
   const container = document.getElementById("project-list");
 
+  // Сортировка по дате (новые сверху)
+  data.projects.sort((a, b) => new Date(b.date) - new Date(a.date));
+
   data.projects.forEach(project => {
     const card = document.createElement("div");
     card.className = "card";
@@ -21,6 +24,19 @@ async function loadProjects() {
     const desc = document.createElement("p");
     desc.textContent = project.description;
 
+    // 📌 Теги / жанры
+    const tags = document.createElement("div");
+    tags.className = "tags";
+    project.tags.forEach(tag => {
+      const span = document.createElement("span");
+      span.textContent = tag;
+      tags.appendChild(span);
+    });
+
+    const date = document.createElement("p");
+    date.className = "date";
+    date.textContent = `Дата: ${new Date(project.date).toLocaleDateString("ru-RU")}`;
+
     const link = document.createElement("a");
     link.href = project.linkDemo;
     link.target = "_blank";
@@ -28,6 +44,8 @@ async function loadProjects() {
 
     content.appendChild(title);
     content.appendChild(desc);
+    content.appendChild(tags);
+    content.appendChild(date);
     content.appendChild(link);
 
     card.appendChild(cover);

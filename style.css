@@ -101,6 +101,26 @@ h2 {
   background: #D80032;
 }
 
+.tags {
+  margin: 10px 0;
+}
+
+.tags span {
+  display: inline-block;
+  margin: 3px;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  background: #8D99AE;
+  color: #EDF2F4;
+  border-radius: 12px;
+}
+
+.date {
+  font-size: 0.85rem;
+  color: #8D99AE;
+  margin-top: 5px;
+}
+
 footer {
   background: #2B2D42;
   color: #EDF2F4;
