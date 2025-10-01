@@ -121,6 +121,80 @@ h2 {
   margin-top: 5px;
 }
 
+/* CV Sections Styling */
+#experience, #education, #additional {
+  margin: 40px 0;
+}
+
+.cv-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.cv-content h3 {
+  color: #2B2D42;
+  margin-bottom: 15px;
+}
+
+.cv-content h4 {
+  color: #EF233C;
+  margin: 20px 0 10px;
+}
+
+.cv-content p {
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.cv-content ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.cv-content li {
+  margin-bottom: 8px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.cv-content li:before {
+  content: "•";
+  color: #EF233C;
+  position: absolute;
+  left: 0;
+}
+
+.languages, .hobbies, .extra {
+  margin-bottom: 30px;
+}
+
+.job-entry {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #8D99AE;
+}
+
+.job-entry:last-child {
+  border-bottom: none;
+}
+
+.job-title {
+  font-weight: bold;
+  color: #2B2D42;
+}
+
+.job-company {
+  color: #EF233C;
+  font-weight: bold;
+}
+
+.job-date {
+  color: #8D99AE;
+  font-size: 0.9em;
+}
+
 footer {
   background: #2B2D42;
   color: #EDF2F4;

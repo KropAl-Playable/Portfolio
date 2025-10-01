@@ -1,0 +1,145 @@
+Summary
+
+Senior Playable Ads Developer with 5+ years of experience in gamedev and adtech, combining hands-on production (Cocos Creator, CreateJS) with pipeline design, asset optimization and cross-functional leadership. Strong creative sensibility and player-first approach: I turn game assets and concepts into compact, high-quality interactive ads, build in-house production processes, and mentor teams to deliver repeatable results. Comfortable with 3D/2D art pipelines, basic scripting (TypeScript), localization flows and analytics-driven creative iteration.
+
+Key Skills (selected)
+
+Playables & Code — Cocos Creator (mid), TypeScript (mid), CreateJS / Adobe Animate (mid), HTML5 (mid)
+3D / Art / UI — Blender (basic → asset optimization, baking, simple animation), Photoshop, sprite workflows, frame-by-frame animation
+Tools & Engines — Figma (basic), Unity (basic), Unreal Engine 4 (basic), Miro (basic)
+Analytics & Optimization — interpretation of creative metrics, A/B testing workflow input, hypotheses generation with marketing/analytics teams
+Pipeline & Processes — in-house pipeline design, documentation and guides, asset libraries, build/export optimization for ad networks
+Soft skills — team leadership, mentoring, documentation, cross-team communication, facilitation of ideation sessions, public presentation
+
+Professional Experience
+ChillBase — Senior Playable Ads Developer
+
+Apr 2025 – Present
+ChillBase studio focused on playable ad production and creative development.
+
+Responsibilities
+
+Full cycle production of playable ads using Cocos Creator: concept → prototyping → build → delivery.
+
+3D work in Blender: model optimization, UV baking, texture setup, lightmaps and simple animation retargeting.
+
+UI/UX design and iteration for short interactive experiences (rapid prototyping of HUD, onboarding flows, CTA placement).
+
+Asset optimization for web delivery: atlasing, sprite/spritesheet generation, LOD and texture compression strategies.
+
+Localization readiness and dynamic language support for in-game texts and UI.
+
+Preparing and adapting builds for multiple ad networks (size limits, autoplay rules, mute/restore behavior).
+
+Close collaboration with marketing and analytics: tracking KPIs (engagement, session length, CTR proxies), producing actionable hypotheses and test variants.
+
+Selected achievements
+
+Designed and implemented an in-house playable production pipeline (from briefs to build distribution) and associated templates.
+
+Authored multi-page developer and QA guides that standardized builds and reduced rework.
+
+Built a playable-ready asset library assembled from game assets (sprites, rigs, VFX prefabs), enabling faster prototyping.
+
+Delivered 10 high-quality playable creatives (excluding minor A/B/geo variants), improving team throughput and creative consistency.
+
+HotSiberians — Middle → Lead Playable Ads Developer
+
+Apr 2022 – Mar 2025
+Worked inside the marketing/creative team to evolve playable production from banners to 3D playables.
+
+Responsibilities
+
+Scriptwriting and concepting: drafting short scenario flows focused on fast comprehension and engagement.
+
+3D creation and adaptation: modelling simple props/characters, texture baking, retopology for web performance.
+
+2D animation and frame-by-frame work for stylized visuals; production of spritesheets and animated elements.
+
+Development of mechanics and interaction code (Cocos Creator / TypeScript prototypes); integration with ad wrappers.
+
+Asset optimization and packaging to meet ad network constraints (size, performance, compatibility).
+
+End-to-end localization and multi-language builds.
+
+Weekly benchmarking and competitor deconstruction: leading calls with marketing to extract technical & narrative learnings and turn them into testable hypotheses.
+
+Mentoring junior developers, coordinating designers and animators, and liaising with product/marketing stakeholders.
+
+Selected achievements
+
+Led the transition of playable development to full 3D, increasing visual fidelity and engagement potential.
+
+Defined and rolled out a structured pipeline and specification template (TЗ) that accelerated handoffs between creatives and devs and reduced clarification cycles.
+
+Introduced lightweight TypeScript usage to the team and advanced internal best practices for Cocos Creator builds.
+
+Established recurring competitive analysis sessions that fed ideation and testing roadmaps.
+
+Otklyk ADV — HTML5 Designer / Junior Playable Developer
+
+Sep 2020 – Mar 2022
+Agency environment — production of banners and early playables.
+
+Responsibilities
+
+Production of 2D HTML5 playables and animated banners using CreateJS / Adobe Animate.
+
+Writing scenarios and micro-scripts tailored to short ad formats (5–30s flows).
+
+Manual frame-by-frame character animation and spritesheet assembly.
+
+Adapting creatives for different ad networks and placements (responsive banners, fixed sizes, creatives with click-tags).
+
+Basic asset optimization and export tuning to satisfy file size and performance budgets.
+
+Selected achievements
+
+Delivered several interactive banners and playable proofs; consistently met strict size budgets and network requirements.
+
+Built practical competence in hand animation pipelines and small-build optimizations that informed later 3D workflows.
+
+Earlier experience (selected)
+
+Nord — Designer-consultant (Jan 2019 – Jul 2019) — outdoor advertising design and client consulting.
+OOO Pechatnik — Head of Post-Print Department (Sep 2017 – Dec 2018) — led team of 4, implemented CRM, halved turnaround times for repeat clients.
+Freelance — Designer/Artist (Sep 2016 – Aug 2017).
+OOO Printshop — Designer (Feb 2013 – Aug 2016) — POS materials, branding and production workflows.
+
+Education & Courses
+
+Vyatka State Humanitarian University — Fine Arts & Graphic Design (2 years, unfinished)
+
+Game Analytics — devtodev (2019)
+
+Basics of Figma (2020)
+
+Basics of Unreal Engine 4 (2020)
+
+Unity Basics (2022)
+
+Continuous self-education: TypeScript, Cocos Creator, Blender (asset optimization, texture baking), UI/UX and game design fundamentals (video courses, peer mentoring).
+
+Languages
+
+Russian — Native
+
+English — B1 (Intermediate) — comfortable with technical documentation, verbal communication in prepared contexts
+
+Italian — A1 (Basic)
+
+Greek — A1 (Basic)
+
+Hobbies & Interests
+
+Playing and analyzing games (roguelikes, RPGs, strategy) — source of creative inspiration and mechanic ideas.
+
+Digital painting and illustration — participated in themed art contests (Hearthstone/WoW style).
+
+Experimenting with small tech demos and physics effects for short interactive creatives.
+
+Additional
+
+Availability: open to remote and hybrid roles; open to relocation for the right opportunity.
+
+References: available on request.

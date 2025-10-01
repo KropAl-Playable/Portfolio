@@ -1,5 +1,98 @@
+// Get user's language
+const userLang = navigator.language || navigator.userLanguage;
+const isRussian = userLang.toLowerCase().startsWith('ru');
+
+// Parse CV sections from text
+function parseCVSections(text) {
+  const sections = {};
+  let currentSection = '';
+  let content = [];
+  
+  text.split('\n').forEach(line => {
+    if (line.match(/^[A-Za-z& ]+$/)) {
+      if (currentSection) {
+        sections[currentSection] = content.join('\n');
+        content = [];
+      }
+      currentSection = line.trim();
+    } else if (line.trim() && currentSection) {
+      content.push(line);
+    }
+  });
+  
+  if (currentSection && content.length) {
+    sections[currentSection] = content.join('\n');
+  }
+  
+  return sections;
+}
+
+// Convert text content to HTML
+function formatCVContent(content) {
+  return content
+    .split('\n\n')
+    .map(paragraph => `<p>${paragraph.trim()}</p>`)
+    .join('');
+}
+
+// Format experience section
+function formatExperience(content) {
+  const entries = content.split(/\n(?=[A-Za-z]+ — )/);
+  return entries.map(entry => {
+    const [title, ...rest] = entry.split('\n');
+    const [role, period] = title.split(' — ');
+    return `
+      <div class="job-entry">
+        <div class="job-title">${role}</div>
+        <div class="job-date">${period}</div>
+        ${formatCVContent(rest.join('\n'))}
+      </div>
+    `;
+  }).join('');
+}
+
+// Update page content based on language
+function updatePageContent() {
+  // Update header
+  document.querySelector('h1').textContent = isRussian ? 'Алексей Кропачев' : 'Alexey Kropachev';
+  document.querySelector('header p').textContent = 'Senior Playable Ads Developer / Team Lead';
+  
+  // Update section titles
+  document.querySelectorAll('[data-ru][data-en]').forEach(el => {
+    el.textContent = isRussian ? el.dataset.ru : el.dataset.en;
+  });
+  
+  // Load and update CV sections
+  fetch(isRussian ? 'CV_RU.txt' : 'CV_EN.txt')
+    .then(response => response.text())
+    .then(text => {
+      const sections = parseCVSections(text);
+      
+      // Update Summary
+      document.querySelector('#about p').textContent = sections['Summary'];
+      
+      // Update Professional Experience
+      document.querySelector('#experience .cv-content').innerHTML = 
+        formatExperience(sections['Professional Experience']);
+      
+      // Update Education
+      document.querySelector('#education .cv-content').innerHTML = 
+        formatCVContent(sections['Education & Courses']);
+      
+      // Update Additional sections
+      document.querySelector('#additional .languages .cv-content').innerHTML = 
+        formatCVContent(sections['Languages']);
+      
+      document.querySelector('#additional .hobbies .cv-content').innerHTML = 
+        formatCVContent(sections['Hobbies & Interests']);
+      
+      document.querySelector('#additional .extra .cv-content').innerHTML = 
+        formatCVContent(sections['Additional']);
+    });
+}
+
 async function loadProjects() {
-  const res = await fetch("data/projects.json");
+  const res = await fetch("projects.json");
   const data = await res.json();
 
   const container = document.getElementById("project-list");
@@ -52,7 +145,7 @@ async function loadProjects() {
     title.textContent = project.title;
 
     const desc = document.createElement("p");
-    desc.textContent = project.description;
+    desc.textContent = isRussian ? project.description : (project.description_en || project.description);
 
     // 📌 Теги / жанры
     const tags = document.createElement("div");
@@ -103,4 +196,7 @@ async function loadProjects() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", loadProjects);
+document.addEventListener("DOMContentLoaded", () => {
+  updatePageContent();
+  loadProjects();
+});
