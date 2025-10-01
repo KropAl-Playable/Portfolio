@@ -418,49 +418,51 @@ function initializePixiTrail() {
   document.addEventListener('mousemove', handleMouseMove);
 
   // Load trail texture and setup animation
-  PIXI.Loader.shared.add('trail', trailTextureUrl).load(() => {
-    const ticker = () => {
-      // Add new point
-      trailPoints.push({
-        x: lastX,
-        y: lastY,
-        alpha: 1,
-        sprite: null
-      });
+  const texture = PIXI.Texture.from(trailTextureUrl);
 
-      if (trailPoints.length > maxTrail) {
-        const old = trailPoints.shift();
-        if (old.sprite) {
-          app.stage.removeChild(old.sprite);
-          old.sprite.destroy();
-        }
+  // Trail animation ticker
+  const ticker = () => {
+    // Add new point
+    trailPoints.push({
+      x: lastX,
+      y: lastY,
+      alpha: 1,
+      sprite: null
+    });
+
+    if (trailPoints.length > maxTrail) {
+      const old = trailPoints.shift();
+      if (old.sprite) {
+        app.stage.removeChild(old.sprite);
+        old.sprite.destroy();
       }
+    }
 
-      // Draw trail
-      trailPoints.forEach((pt, i) => {
-        if (!pt.sprite) {
-          pt.sprite = new PIXI.Sprite(PIXI.Loader.shared.resources['trail'].texture);
-          pt.sprite.anchor.set(0.5);
-          app.stage.addChild(pt.sprite);
-        }
-        pt.sprite.x = pt.x;
-        pt.sprite.y = pt.y;
-        pt.sprite.alpha = (i+1)/trailPoints.length * 0.7;
-        pt.sprite.scale.set(0.5 + 0.7 * (i+1)/trailPoints.length);
-      });
-    };
+    // Draw trail
+    trailPoints.forEach((pt, i) => {
+      if (!pt.sprite) {
+        pt.sprite = new PIXI.Sprite(texture);
+        pt.sprite.anchor.set(0.5);
+        app.stage.addChild(pt.sprite);
+      }
+      pt.sprite.x = pt.x;
+      pt.sprite.y = pt.y;
+      pt.sprite.alpha = (i+1)/trailPoints.length * 0.7;
+      pt.sprite.scale.set(0.5 + 0.7 * (i+1)/trailPoints.length);
+    });
+  };
 
-    app.ticker.add(ticker);
+  // Add ticker to the app
+  app.ticker.add(ticker);
 
-    // Cleanup function
-    window.addEventListener('unload', () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('resize', handleResize);
-      app.ticker.remove(ticker);
-      app.destroy(true);
-      trailPoints.forEach(pt => {
-        if (pt.sprite) pt.sprite.destroy();
-      });
+  // Cleanup function
+  window.addEventListener('unload', () => {
+    document.removeEventListener('mousemove', handleMouseMove);
+    window.removeEventListener('resize', handleResize);
+    app.ticker.remove(ticker);
+    app.destroy(true);
+    trailPoints.forEach(pt => {
+      if (pt.sprite) pt.sprite.destroy();
     });
   });
 }
