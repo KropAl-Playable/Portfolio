@@ -245,7 +245,7 @@ function isBanner(project) {
     container.appendChild(card);
   });
       storeUrl = project.linkStoreAppStore;
-    }
+  
     storeButton.href = storeUrl || "#";
     if (!storeUrl) storeButton.style.display = "none";
     actions.appendChild(playButton);
@@ -284,8 +284,7 @@ function openPlayableModal(project) {
     }
   }
 }
-  });
-}
+
 
 async function loadProjects() {
   const res = await fetch("projects.json");
