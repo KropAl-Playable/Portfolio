@@ -1,7 +1,8 @@
 {
   "projects": [
     {
-      "id": "desert-restorer",
+  "id": "desert-restorer",
+  "type": "playable",
       "title": "Desert Restorer",
       "genres": ["Hypercore", "RPG"],
       "forProject": "Desert City",
@@ -15,13 +16,14 @@
       "date": "2024-12-28",
       "popularity": 87,
       "linkDemo": "data/projects/desert_city/desert_restorer.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/desert_city/desert_restorer.html" }
     },
     {
-      "id": "truck-upgrade",
+  "id": "truck-upgrade",
+  "type": "playable",
       "title": "Truck Upgrade",
       "genres": ["Upgrade", "Casual"],
       "forProject": "Desert City",
@@ -35,13 +37,14 @@
       "date": "2024-12-04",
       "popularity": 92,
       "linkDemo": "data/projects/desert_city/truck_upgrade.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/desert_city/truck_upgrade.html" }
     },
     {
-      "id": "water-conveyor",
+  "id": "water-conveyor",
+  "type": "playable",
       "title": "Water Conveyor",
       "genres": ["Upgrade", "2D", "Hypercore"],
       "forProject": "Desert City",
@@ -55,13 +58,14 @@
       "date": "2024-05-29",
       "popularity": 92,
       "linkDemo": "data/projects/desert_city/water_conveyor.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/desert_city/water_conveyor.html" }
     },
     {
-      "id": "upgrade-collect",
+  "id": "upgrade-collect",
+  "type": "playable",
       "title": "Upgrade, Collect!",
       "genres": ["Upgrade", "2D", "Collecting"],
       "forProject": "Desert City",
@@ -75,13 +79,14 @@
       "date": "2024-04-11",
       "popularity": 92,
       "linkDemo": "data/projects/desert_city/upgrade_collect.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/desert_city/upgrade_collect.html" }
     },
     {
-      "id": "collect-fight",
+  "id": "collect-fight",
+  "type": "playable",
       "title": "Collect, Fight!",
       "genres": ["Upgrade", "2D", "Collecting", "Fighting"],
       "forProject": "Desert City",
@@ -95,13 +100,14 @@
       "date": "2024-05-24",
       "popularity": 92,
       "linkDemo": "data/projects/desert_city/collect_fight.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=burning.city.mad.survivors.idle.simulator.tycoon&hl=ru&pli=1",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/desert_city/collect_fight.html" }
     },
     {
-      "id": "rp_faction_improve",
+  "id": "rp_faction_improve",
+  "type": "playable",
       "title": "RP Faction Improvement",
       "genres": ["3D", "Roleplay", "Choose"],
       "forProject": "OneState: RolePlay",
@@ -115,13 +121,14 @@
       "date": "2025-09-29",
       "popularity": 74,
       "linkDemo": "data/projects/one_state/rp_faction.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/one_state/rp_faction.html" }
     },
     {
-      "id": "warhouse",
+  "id": "warhouse",
+  "type": "playable",
       "title": "Warhouse",
       "genres": ["3D", "RPG", "Hypercore", "Stacking"],
       "forProject": "OneState: RolePlay",
@@ -135,13 +142,14 @@
       "date": "2025-09-03",
       "popularity": 74,
       "linkDemo": "data/projects/one_state/warhouse.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/one_state/warhouse.html" }
     },
     {
-      "id": "warhouse_bats",
+  "id": "warhouse_bats",
+  "type": "playable",
       "title": "Warhouse Baseball Bats",
       "genres": ["3D", "RPG", "Hypercore", "Stacking"],
       "forProject": "OneState: RolePlay",
@@ -155,13 +163,14 @@
       "date": "2025-09-30",
       "popularity": 74,
       "linkDemo": "data/projects/one_state/warhouse_baseball.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/one_state/warhouse_baseball.html" }
     },
     {
-      "id": "car-tuning",
+  "id": "car-tuning",
+  "type": "playable",
       "title": "CarTuning",
       "genres": ["3D", "Upgrade", "Racing"],
       "forProject": "OneState: RolePlay",
@@ -175,13 +184,14 @@
       "date": "2025-05-14",
       "popularity": 74,
       "linkDemo": "data/projects/one_state/car_tuning_long.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/one_state/car_tuning_long.html" }
     },
     {
-      "id": "improvement_car",
+  "id": "improvement_car",
+  "type": "playable",
       "title": "Improvement Car",
       "genres": ["3D", "Upgrade"],
       "forProject": "OneState: RolePlay",
@@ -195,13 +205,14 @@
       "date": "2025-07-14",
       "popularity": 74,
       "linkDemo": "data/projects/one_state/improvement_car.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=com.Chillgaming.oneState&hl=ru",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/one_state/improvement_car.html" }
     },
     {
-      "id": "ride-master",
+  "id": "ride-master",
+  "type": "playable",
       "title": "RideMaster",
       "genres": ["3D", "Physics", "Racing", "Casual"],
       "forProject": "OneState: RolePlay",
@@ -215,13 +226,14 @@
       "date": "2025-02-19",
       "popularity": 74,
       "linkDemo": "data/projects/test_projects/ride_master.html",
-      "linkStore": "",
+      
       "linkStoreGoogle": "",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/test_projects/ride_master.html" }
     },
     {
-      "id": "lumber_ugprade",
+  "id": "lumber_ugprade",
+  "type": "playable",
       "title": "Lumber Upgrade",
       "genres": ["3D", "Physics", "Racing", "Casual", "Hypercore"],
       "forProject": "OneState: RolePlay",
@@ -235,13 +247,14 @@
       "date": "2025-04-29",
       "popularity": 74,
       "linkDemo": "data/projects/idle_lumber/index.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=com.lumber.inc&hl=ru",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=com.lumber.inc&hl=ru",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/idle_lumber/index.html" }
     },
     {
-      "id": "tutorial",
+  "id": "tutorial",
+  "type": "playable",
       "title": "Tutorial Level",
       "genres": ["3D", "Physics", "Casual", "Upgrade"],
       "forProject": "Army Forces: Idle Tycoon",
@@ -255,13 +268,14 @@
       "date": "2025-01-28",
       "popularity": 74,
       "linkDemo": "data/projects/army_forces/tutorial_3D.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.military.operation.army.mission.tycoon&hl=ru",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=hotsiberians.idle.military.operation.army.mission.tycoon&hl=ru",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/army_forces/tutorial_3D.html" }
     },
     {
-      "id": "training-tailor",
+  "id": "training-tailor",
+  "type": "playable",
       "title": "Training Tailor",
       "genres": ["2D", "Casual", "Upgrade"],
       "forProject": "Army Forces: Idle Tycoon",
@@ -275,13 +289,14 @@
       "date": "2024-03-23",
       "popularity": 74,
       "linkDemo": "data/projects/army_forces/training_tailor.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.military.operation.army.mission.tycoon&hl=ru",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=hotsiberians.idle.military.operation.army.mission.tycoon&hl=ru",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/army_forces/training_tailor.html" }
     },
     {
-      "id": "upgrade-soldier",
+  "id": "upgrade-soldier",
+  "type": "playable",
       "title": "Upgrade Soldier",
       "genres": ["2D", "Casual", "Upgrade"],
       "forProject": "Army Forces: Idle Tycoon",
@@ -295,13 +310,14 @@
       "date": "2023-12-08",
       "popularity": 74,
       "linkDemo": "data/projects/army_forces/training-tailor.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.military.operation.army.mission.tycoon&hl=ru",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=hotsiberians.idle.military.operation.army.mission.tycoon&hl=ru",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/army_forces/upgrade_soldier.html" }
     },
     {
-      "id": "build-hospital",
+  "id": "build-hospital",
+  "type": "playable",
       "title": "Build Hospital",
       "genres": ["3D", "Upgrade", "Hypercore"],
       "forProject": "Zombie Hospital: Idle Tycoon",
@@ -315,13 +331,14 @@
       "date": "2025-14-02",
       "popularity": 74,
       "linkDemo": "data/projects/zombie_hospital/build_hospital.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/zombie_hospital/build_hospital.html" }
     },
     {
-      "id": "hospital-upgrade",
+  "id": "hospital-upgrade",
+  "type": "playable",
       "title": "Hospital Upgrade",
       "genres": ["3D", "Upgrade", "Top-Down"],
       "forProject": "Zombie Hospital: Idle Tycoon",
@@ -335,13 +352,14 @@
       "date": "2025-22-01",
       "popularity": 74,
       "linkDemo": "data/projects/zombie_hospital/hospital_upgrade.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/zombie_hospital/hospital_upgrade.html" }
     },
     {
-      "id": "talking-zombie",
+  "id": "talking-zombie",
+  "type": "playable",
       "title": "Talking Zombie",
       "genres": ["3D", "Casual", "Tamagochi"],
       "forProject": "Zombie Hospital: Idle Tycoon",
@@ -355,13 +373,14 @@
       "date": "2024-18-07",
       "popularity": 74,
       "linkDemo": "data/projects/zombie_hospital/talking_zombie.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/zombie_hospital/talking_zombie.html" }
     },
     {
-      "id": "healing-surgery",
+  "id": "healing-surgery",
+  "type": "playable",
       "title": "Healing Surgery",
       "genres": ["2D", "Casual", "Tamagochi"],
       "forProject": "Zombie Hospital: Idle Tycoon",
@@ -375,13 +394,14 @@
       "date": "2024-29-03",
       "popularity": 74,
       "linkDemo": "data/projects/zombie_hospital/healing_surgery.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/zombie_hospital/healing_surgery.html" }
     },
     {
-      "id": "catch-monsters",
+  "id": "catch-monsters",
+  "type": "playable",
       "title": "Catch Monsters",
       "genres": ["2D", "Casual", "QTE"],
       "forProject": "Idle Anomaly: Alien Control",
@@ -395,7 +415,7 @@
       "date": "2023-29-03",
       "popularity": 74,
       "linkDemo": "data/projects/idle_anomaly/catch_monsters.html",
-      "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.anomalies.research.station.building.tycoon.simulator&hl=ru",
+      
       "linkStoreGoogle": "https://play.google.com/store/apps/details?id=hotsiberians.idle.anomalies.research.station.building.tycoon.simulator&hl=ru",
       "linkStoreAppStore": "",
       "playable": { "type": "iframe", "src": "data/projects/idle_anomaly/catch_monsters.html" }
