@@ -2,24 +2,6 @@
 const userLang = navigator.language || navigator.userLanguage;
 const isRussian = userLang.toLowerCase().startsWith('ru');
 
-//     try {
-      coverContainer.appendChild(pixiApp.view);
-      // Load image lazily with error handling
-      PIXI.Texture.fromURL(project.cover.fallback).then(texture => {
-        const sprite = new PIXI.Sprite(texture);
-        sprite.anchor.set(0.5);
-        pixiApp.stage.addChild(sprite);
-      }).catch(error => {
-        console.warn('Failed to load image:', error);
-        // Fallback to standard img element
-        const fallbackImg = document.createElement('img');
-        fallbackImg.src = project.cover.fallback;
-        fallbackImg.alt = project.title;
-        coverContainer.appendChild(fallbackImg);
-      });
-    } catch (error) {
-      console.warn('Failed to setup PIXI view:', error);
-    } a job entry
 function formatJobEntry(job) {
   const responsibilities = job.responsibilities ? 
     `<div class="responsibilities">
@@ -53,107 +35,64 @@ function formatEarlierJob(job) {
   `;
 }
 
-// Update page content based on language
-function updatePageContent() {
-  fetch(isRussian ? 'cv_ru.json' : 'cv_en.json')
-    .then(response => response.json())
-    .then(cv => {
-      // Update meta information
-      document.querySelector('h1').textContent = cv.meta.name;
-      // Update job title in header-contacts
-      const contacts = document.querySelector('.header-contacts p');
-      if (contacts) {
-        // Remove job title from contacts if present
-        contacts.childNodes.forEach(node => {
-          if (node.nodeType === Node.TEXT_NODE && node.textContent.includes('Team Lead')) {
-            node.textContent = '';
-          }
-        });
-      }
-      
-      // Update section titles
-      document.querySelectorAll('[data-ru][data-en]').forEach(el => {
-        if (el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'H4') {
-          el.textContent = isRussian ? el.dataset.ru : el.dataset.en;
-        }
-      });
-      
-  // Update Summary
-  const aboutSummary = document.querySelector('#about .summary') || document.querySelector('.cv-spoiler .summary');
-  if (aboutSummary) aboutSummary.textContent = cv.summary;
-      
-      // Update Skills
-      Object.entries(cv.skills).forEach(([category, skills]) => {
-        const ul = document.querySelector(`#${category} ul`);
-        if (ul) {
-          ul.innerHTML = skills.map(skill => `<li>${skill}</li>`).join('');
-        }
-      });
-      
-      // Update Experience
-      const mainExp = document.querySelector('#experience .main-experience');
-      mainExp.innerHTML = cv.experience.map(formatJobEntry).join('');
-      
-      const earlierExp = document.querySelector('#experience .earlier-experience');
-      earlierExp.innerHTML += cv.earlier_experience.map(formatEarlierJob).join('');
-      
-      // Update Education
-      const eduList = document.querySelector('#education .education-list');
-      eduList.innerHTML = cv.education.map(edu => `
-        <div class="education-entry">
-          <h4>${edu.institution}</h4>
-          <p>${edu.faculty}</p>
-          <p class="notes">${edu.notes}</p>
-        </div>
-      `).join('');
-      
-      const coursesList = document.querySelector('#education .courses-list ul');
-      coursesList.innerHTML = cv.courses.map(course => `<li>${course}</li>`).join('');
-      
-      // Update Languages
-      const langList = document.querySelector('#additional .languages ul');
-      langList.innerHTML = cv.languages.map(lang => 
-        `<li>${lang.lang} — ${lang.level}</li>`
-      ).join('');
-      
-      // Update Hobbies
-      const hobbiesList = document.querySelector('#additional .hobbies ul');
-      hobbiesList.innerHTML = cv.hobbies.map(hobby => `<li>${hobby}</li>`).join('');
-      
-      // Update Additional Info
-      const extra = document.querySelector('#additional .extra');
-      extra.querySelector('.availability').textContent = cv.additional.availability;
-      extra.querySelector('.references').textContent = cv.additional.references;
-    });
+// Global state
+const state = {
+  projects: [],
+  currentSort: 'newest',
+  currentFilter: null
+};
+
+// Initialize projects list
+async function loadProjects() {
+  try {
+    const res = await fetch("projects.json");
+    const data = await res.json();
+    state.projects = data.projects || [];
+    renderProjects();
+  } catch (error) {
+    console.warn('Failed to load projects:', error);
+  }
 }
-
-let allProjects = [];
-
-let currentSort = 'newest';
-let currentFilter = null;
 
 function renderProjects() {
   const container = document.getElementById("project-list");
+  if (!container) return;
+  
   container.innerHTML = '';
-  let projects = [...allProjects];
+  let projects = [...state.projects];
   // Filter
-  if (currentFilter === '3d') projects = projects.filter(is3D);
-  if (currentFilter === '2d') projects = projects.filter(is2D);
-  if (currentFilter === 'playable') projects = projects.filter(isPlayable);
-  if (currentFilter === 'banner') projects = projects.filter(isBanner);
+  if (state.currentFilter === '3d') projects = projects.filter(is3D);
+  if (state.currentFilter === '2d') projects = projects.filter(is2D);
+  if (state.currentFilter === 'playable') projects = projects.filter(isPlayable);
+  if (state.currentFilter === 'banner') projects = projects.filter(isBanner);
   // Sort
   projects.sort((a, b) => {
-    if (currentSort === 'newest') return new Date(b.date) - new Date(a.date);
-    if (currentSort === 'oldest') return new Date(a.date) - new Date(b.date);
+    if (state.currentSort === 'newest') return new Date(b.date) - new Date(a.date);
+    if (state.currentSort === 'oldest') return new Date(a.date) - new Date(b.date);
     return 0;
   });
 
+  if (!projects || !Array.isArray(projects)) {
+    console.warn('Invalid projects data');
+    return;
+  }
+
   projects.forEach(project => {
-    const card = document.createElement("div");
-    card.className = "card";
-    // Cover container for uniform size
-    const coverContainer = document.createElement("div");
-    coverContainer.className = "card-cover-container";
+    if (!project) return;
+    createProjectCard(project);
+  });
+}
+
+function createProjectCard(project) {
+  const container = document.getElementById("project-list");
+  if (!container) return;
+
+  const card = document.createElement("div");
+  card.className = "card";
+  
+  // Cover container for uniform size
+  const coverContainer = document.createElement("div");
+  coverContainer.className = "card-cover-container";
 
     let pixiApp, sprite;
     // PIXI.js cover animation
@@ -172,7 +111,7 @@ function renderProjects() {
         // Load image lazily with error handling
         PIXI.Texture.fromURL(project.cover.fallback).then(texture => {
           if (!pixiApp) return; // App might have been destroyed
-          const sprite = new PIXI.Sprite(texture);
+          sprite = new PIXI.Sprite(texture);
           sprite.anchor.set(0.5);
           pixiApp.stage.addChild(sprite);
           
@@ -190,13 +129,17 @@ function renderProjects() {
           
           // Initial resize
           setTimeout(resizePixi, 0);
-          window.addEventListener('resize', resizePixi);
+          const resizeHandler = () => {
+            if (pixiApp && sprite) resizePixi();
+          };
+          window.addEventListener('resize', resizeHandler);
           
           // Hover animation
           let hover = false;
           let mouseX = 0, mouseY = 0;
-          coverContainer.addEventListener('mouseenter', () => { hover = true; });
-          coverContainer.addEventListener('mouseleave', () => {
+          
+          const enterHandler = () => { hover = true; };
+          const leaveHandler = () => {
             hover = false;
             if (!sprite) return;
             sprite.scale.set(1, 1);
@@ -206,117 +149,73 @@ function renderProjects() {
               pixiApp.stage.position.set(0, 0);
               pixiApp.stage.angle = 0;
             }
-          });
+          };
           
-          coverContainer.addEventListener('mousemove', (e) => {
+          const moveHandler = (e) => {
             const rect = coverContainer.getBoundingClientRect();
             mouseX = (e.clientX - rect.left) / rect.width - 0.5;
             mouseY = (e.clientY - rect.top) / rect.height - 0.5;
-          });
+          };
+          
+          coverContainer.addEventListener('mouseenter', enterHandler);
+          coverContainer.addEventListener('mouseleave', leaveHandler);
+          coverContainer.addEventListener('mousemove', moveHandler);
+          
+          // Animation ticker
+          const tickerHandler = () => {
+            if (hover && sprite && pixiApp) {
+              sprite.scale.set(1.07, 1.07);
+              const maxAngle = 0.18;
+              sprite.rotation = -mouseX * maxAngle * 0.5;
+              pixiApp.stage.pivot.set(sprite.x, sprite.y);
+              pixiApp.stage.position.set(sprite.x, sprite.y);
+              pixiApp.stage.angle = mouseX * 8;
+            }
+          };
           
           if (pixiApp) {
-            pixiApp.ticker.add(() => {
-              if (hover && sprite) {
-                sprite.scale.set(1.07, 1.07);
-                const maxAngle = 0.18;
-                sprite.rotation = -mouseX * maxAngle * 0.5;
-                pixiApp.stage.pivot.set(sprite.x, sprite.y);
-                pixiApp.stage.position.set(sprite.x, sprite.y);
-                pixiApp.stage.angle = mouseX * 8;
-              }
-            });
+            pixiApp.ticker.add(tickerHandler);
           }
           
-          // Cleanup function
-          card.addEventListener('destroy', () => {
-            window.removeEventListener('resize', resizePixi);
-            if (pixiApp) {
-              pixiApp.destroy(true);
-              pixiApp = null;
-            }
+          // Cleanup function for when the card is removed
+          const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+              mutation.removedNodes.forEach((node) => {
+                if (node === card) {
+                  window.removeEventListener('resize', resizeHandler);
+                  coverContainer.removeEventListener('mouseenter', enterHandler);
+                  coverContainer.removeEventListener('mouseleave', leaveHandler);
+                  coverContainer.removeEventListener('mousemove', moveHandler);
+                  if (pixiApp) {
+                    pixiApp.ticker.remove(tickerHandler);
+                    pixiApp.destroy(true);
+                    pixiApp = null;
+                  }
+                  observer.disconnect();
+                }
+              });
+            });
           });
+          
+          observer.observe(card.parentNode, { childList: true });
         }).catch(error => {
           console.warn('Failed to load image:', error);
-          // Fallback to standard img element
-          const fallbackImg = document.createElement('img');
-          fallbackImg.src = project.cover.fallback;
-          fallbackImg.alt = project.title;
-          coverContainer.appendChild(fallbackImg);
+          createFallbackImage();
         });
       } catch (error) {
         console.warn('Failed to setup PIXI view:', error);
-        // Fallback to standard img element
-        const fallbackImg = document.createElement('img');
-        fallbackImg.src = project.cover.fallback;
-        fallbackImg.alt = project.title;
-        coverContainer.appendChild(fallbackImg);
+        createFallbackImage();
       }
     } else {
-      // Fallback when PIXI is not available
+      createFallbackImage();
+    }
+    
+    function createFallbackImage() {
       const fallbackImg = document.createElement('img');
       fallbackImg.src = project.cover.fallback;
       fallbackImg.alt = project.title;
       coverContainer.appendChild(fallbackImg);
     }
-    if (pixiApp) {
-      coverContainer.appendChild(pixiApp.view);
-      // Load image as PIXI sprite
-      const texture = PIXI.Texture.from(project.cover.fallback);
-      const sprite = new PIXI.Sprite(texture);
-      sprite.anchor.set(0.5);
-      pixiApp.stage.addChild(sprite);
-    // Resize canvas and sprite to fit container
-    function resizePixi() {
-      const rect = coverContainer.getBoundingClientRect();
-      pixiApp.renderer.resize(rect.width, rect.height);
-      sprite.x = rect.width / 2;
-      sprite.y = rect.height / 2;
-      // Cover fit
-      const scale = Math.max(rect.width / texture.width, rect.height / texture.height);
-      sprite.width = texture.width * scale;
-      sprite.height = texture.height * scale;
-    }
-    // Initial resize
-    setTimeout(resizePixi, 0);
-    if (pixiApp) {
-      window.addEventListener('resize', resizePixi);
-      // Hover animation: scale and perspective
-      let hover = false;
-      let mouseX = 0, mouseY = 0;
-      coverContainer.addEventListener('mouseenter', () => { hover = true; });
-      coverContainer.addEventListener('mouseleave', () => {
-        hover = false;
-        sprite.scale.set(1, 1);
-        sprite.rotation = 0;
-        pixiApp.stage.pivot.set(0, 0);
-        pixiApp.stage.position.set(0, 0);
-        pixiApp.stage.angle = 0;
-      });
-    }
-    coverContainer.addEventListener('mousemove', (e) => {
-      const rect = coverContainer.getBoundingClientRect();
-      mouseX = (e.clientX - rect.left) / rect.width - 0.5;
-      mouseY = (e.clientY - rect.top) / rect.height - 0.5;
-    });
-    if (pixiApp) {
-      pixiApp.ticker.add(() => {
-        if (hover) {
-        // Scale up
-        sprite.scale.set(1.07, 1.07);
-        // Perspective skew/rotation
-        const maxAngle = 0.18; // ~10deg
-        sprite.rotation = -mouseX * maxAngle * 0.5;
-        pixiApp.stage.pivot.set(sprite.x, sprite.y);
-        pixiApp.stage.position.set(sprite.x, sprite.y);
-        pixiApp.stage.angle = mouseX * 8;
-      } else {
-        sprite.scale.set(1, 1);
-        sprite.rotation = 0;
-        pixiApp.stage.pivot.set(0, 0);
-        pixiApp.stage.position.set(0, 0);
-        pixiApp.stage.angle = 0;
-      }
-    });
 
     const content = document.createElement("div");
     content.className = "card-content";
@@ -362,8 +261,7 @@ function renderProjects() {
     card.appendChild(coverContainer);
     card.appendChild(content);
     container.appendChild(card);
-  });
-}
+  }
 
 function is3D(project) {
   return project.tags && project.tags.some(tag => tag.toLowerCase().includes('3d'));
@@ -403,10 +301,14 @@ function openPlayableModal(project) {
 
 
 async function loadProjects() {
-  const res = await fetch("projects.json");
-  const data = await res.json();
-  allProjects = data.projects;
-  renderProjects();
+  try {
+    const res = await fetch("projects.json");
+    const data = await res.json();
+    state.projects = Array.isArray(data.projects) ? data.projects : [];
+    renderProjects();
+  } catch (error) {
+    console.warn('Failed to load projects:', error);
+  }
 }
 
 function setupProjectTabs() {
@@ -416,15 +318,15 @@ function setupProjectTabs() {
       tabs.forEach(t => t.classList.remove('active'));
       this.classList.add('active');
       if (this.dataset.sort) {
-        currentSort = this.dataset.sort;
+        state.currentSort = this.dataset.sort;
         // Remove filter highlight
-        currentFilter = null;
+        state.currentFilter = null;
         tabs.forEach(t => { if (t.dataset.filter) t.classList.remove('active'); });
       }
       if (this.dataset.filter) {
-        currentFilter = this.dataset.filter;
+        state.currentFilter = this.dataset.filter;
         // Remove sort highlight
-        currentSort = 'newest';
+        state.currentSort = 'newest';
         tabs.forEach(t => { if (t.dataset.sort) t.classList.remove('active'); });
       }
       renderProjects();
@@ -475,7 +377,99 @@ const handleScroll = debounce(function() {
 
 window.addEventListener('scroll', handleScroll);
 
+// Initialize PIXI Mouse Trail Effect
+function initializePixiTrail() {
+  if (!window.PIXI) return;
+
+  const trailTextureUrl = 'assets/trail.png';
+  const app = new PIXI.Application({
+    width: window.innerWidth,
+    height: window.innerHeight,
+    backgroundAlpha: 0,
+    resolution: window.devicePixelRatio || 1,
+    autoDensity: true,
+    antialias: true
+  });
+
+  app.view.style.position = 'fixed';
+  app.view.style.left = '0';
+  app.view.style.top = '0';
+  app.view.style.width = '100vw';
+  app.view.style.height = '100vh';
+  app.view.style.pointerEvents = 'none';
+  app.view.style.zIndex = '999';
+  document.body.appendChild(app.view);
+
+  // Handle resize
+  const handleResize = () => {
+    app.renderer.resize(window.innerWidth, window.innerHeight);
+  };
+  window.addEventListener('resize', handleResize);
+
+  // Trail logic
+  const trailPoints = [];
+  const maxTrail = 32;
+  let lastX = window.innerWidth/2, lastY = window.innerHeight/2;
+  
+  const handleMouseMove = e => {
+    lastX = e.clientX;
+    lastY = e.clientY;
+  };
+  document.addEventListener('mousemove', handleMouseMove);
+
+  // Load trail texture and setup animation
+  PIXI.Loader.shared.add('trail', trailTextureUrl).load(() => {
+    const ticker = () => {
+      // Add new point
+      trailPoints.push({
+        x: lastX,
+        y: lastY,
+        alpha: 1,
+        sprite: null
+      });
+
+      if (trailPoints.length > maxTrail) {
+        const old = trailPoints.shift();
+        if (old.sprite) {
+          app.stage.removeChild(old.sprite);
+          old.sprite.destroy();
+        }
+      }
+
+      // Draw trail
+      trailPoints.forEach((pt, i) => {
+        if (!pt.sprite) {
+          pt.sprite = new PIXI.Sprite(PIXI.Loader.shared.resources['trail'].texture);
+          pt.sprite.anchor.set(0.5);
+          app.stage.addChild(pt.sprite);
+        }
+        pt.sprite.x = pt.x;
+        pt.sprite.y = pt.y;
+        pt.sprite.alpha = (i+1)/trailPoints.length * 0.7;
+        pt.sprite.scale.set(0.5 + 0.7 * (i+1)/trailPoints.length);
+      });
+    };
+
+    app.ticker.add(ticker);
+
+    // Cleanup function
+    window.addEventListener('unload', () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('resize', handleResize);
+      app.ticker.remove(ticker);
+      app.destroy(true);
+      trailPoints.forEach(pt => {
+        if (pt.sprite) pt.sprite.destroy();
+      });
+    });
+  });
+}
+
+// Initialize application
 document.addEventListener("DOMContentLoaded", () => {
+  // Initialize PIXI trail effect
+  initializePixiTrail();
+  
   updatePageContent();
   loadProjects();
   setupProjectTabs();
@@ -533,71 +527,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     });
-    
+
     // Smooth transition
     content.style.transition = 'max-height 0.4s cubic-bezier(.4,0,.2,1)';
   });
 
-  // --- PIXI Mouse Trail Effect ---
-  // Wait for Pixi to be available
-  if (window.PIXI) {
-    const trailTextureUrl = 'assets/trail.png'; // User should provide this file
-    const app = new PIXI.Application({
-      width: window.innerWidth,
-      height: window.innerHeight,
-      backgroundAlpha: 0,
-      resolution: window.devicePixelRatio || 1,
-      autoDensity: true,
-      antialias: true
-    });
-    app.view.style.position = 'fixed';
-    app.view.style.left = '0';
-    app.view.style.top = '0';
-    app.view.style.width = '100vw';
-    app.view.style.height = '100vh';
-    app.view.style.pointerEvents = 'none';
-    app.view.style.zIndex = '999';
-    document.body.appendChild(app.view);
-
-    // Handle resize
-    window.addEventListener('resize', () => {
-      app.renderer.resize(window.innerWidth, window.innerHeight);
-    });
-
-    // Trail logic
-    const trailPoints = [];
-    const maxTrail = 32;
-    let lastX = window.innerWidth/2, lastY = window.innerHeight/2;
-    document.addEventListener('mousemove', e => {
-      lastX = e.clientX;
-      lastY = e.clientY;
-    });
-    PIXI.Loader.shared.add('trail', trailTextureUrl).load(() => {
-      app.ticker.add(() => {
-        // Add new point
-        trailPoints.push({
-          x: lastX,
-          y: lastY,
-          alpha: 1,
-          sprite: null
-        });
-        if (trailPoints.length > maxTrail) {
-          const old = trailPoints.shift();
-          if (old.sprite) app.stage.removeChild(old.sprite);
-        }
-        // Draw trail
-        trailPoints.forEach((pt, i) => {
-          if (!pt.sprite) {
-            pt.sprite = new PIXI.Sprite(PIXI.Loader.shared.resources['trail'].texture);
-            pt.sprite.anchor.set(0.5);
-            app.stage.addChild(pt.sprite);
-          }
-          pt.sprite.x = pt.x;
-          pt.sprite.y = pt.y;
-          pt.sprite.alpha = (i+1)/trailPoints.length * 0.7;
-          pt.sprite.scale.set(0.5 + 0.7 * (i+1)/trailPoints.length);
-        });
-      });
-    });
-  }
+  // Initialize PIXI Mouse Trail Effect
+  initializePixiTrail();
 });

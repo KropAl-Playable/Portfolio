@@ -69,10 +69,15 @@ Projects in `projects.json` follow this structure:
     - Use semantic HTML elements for better accessibility
     - Ensure color contrast meets accessibility standards
 
+7. Pixi.js:
+    - Pixi.js is included for potential future enhancements involving WebGL rendering
+
 ## Common Tasks
 - To add a new project: Update `projects.json` and add required assets/demo files
 - To modify styling: Check `style.css` for the color scheme and existing patterns
 - To update card layout: Modify the card generation logic in `script.js`
+- To update CV information: Edit `cv_en.json` and `cv_ru.json` for English and Russian versions respectively
+- Fix javaScript errors and ensure cross-browser compatibility
 
 ## Integration Points
 - Projects are loaded via JSON fetch from `projects.json`
