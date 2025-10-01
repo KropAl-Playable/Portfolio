@@ -73,7 +73,7 @@ h2 {
 
 .card-cover-container {
   width: 100%;
-  aspect-ratio: 16/9;
+  aspect-ratio: 9/16;
   background: #EDF2F4;
   display: flex;
   align-items: center;
@@ -170,6 +170,101 @@ h2 {
 
 .date {
   display: none;
+}
+
+/* Header styles */
+.header-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+.header-photo {
+  flex: 0 0 200px;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #EDF2F4;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.header-photo img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.header-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.header-contacts {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  min-width: 220px;
+}
+
+#main-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #2B2D42;
+  transition: all 0.35s cubic-bezier(.4,0,.2,1);
+}
+#main-header.shrink {
+  padding: 10px 0 !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+}
+#main-header.shrink .header-photo {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  transition: width 0.3s, height 0.3s;
+}
+#main-header.shrink .header-photo img {
+  width: 48px;
+  height: 48px;
+}
+#main-header.shrink .header-main h1 {
+  font-size: 1.2rem;
+}
+#main-header.shrink .header-main p {
+  font-size: 0.9rem;
+}
+#main-header.shrink .header-main, #main-header.shrink .header-contacts {
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width: 700px) {
+  .header-flex {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .header-contacts {
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-width: 0;
+  }
+  #main-header.shrink .header-photo {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+  }
+  #main-header.shrink .header-photo img {
+    width: 36px;
+    height: 36px;
+  }
 }
 
 /* CV Sections Styling */

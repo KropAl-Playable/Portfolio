@@ -5,7 +5,7 @@ This is a CV and portfolio website showcasing playable ads and game development 
 
 ## Key Files and Structure
 - `index.html`: Main page structure and layout
-- `style.css`: Core styling with a defined color scheme (dark: #2B2D42, gray: #8D99AE, light: #EDF2F4, accent: #EF233C)
+- `style.css`: Core styling with a defined color scheme (dark: #2B2D42, gray: #8D99AE, light: #EDF2F4, accent: #901423ff)
 - `script.js`: Dynamic project card generation and DOM manipulation
 - `data/projects.json`: Central data store for all project information
 - `data/projects/`: Contains individual HTML files for each playable demo
@@ -75,6 +75,6 @@ Projects in `projects.json` follow this structure:
 - To update card layout: Modify the card generation logic in `script.js`
 
 ## Integration Points
-- Projects are loaded via JSON fetch from `data/projects.json`
+- Projects are loaded via JSON fetch from `projects.json`
 - Demo iframes are embedded using the `playable.src` property
 - External links use `linkStore` for app store connections

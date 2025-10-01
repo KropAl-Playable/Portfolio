@@ -229,6 +229,17 @@ function setupProjectTabs() {
   tabs[0].classList.add('active');
 }
 
+// Sticky header shrink on scroll
+window.addEventListener('scroll', function() {
+  const header = document.getElementById('main-header');
+  if (!header) return;
+  if (window.scrollY > 60) {
+    header.classList.add('shrink');
+  } else {
+    header.classList.remove('shrink');
+  }
+});
+
 document.addEventListener("DOMContentLoaded", () => {
   updatePageContent();
   loadProjects();
