@@ -262,23 +262,6 @@ function isPlayable(project) {
 function isBanner(project) {
   return project.playable && project.playable.type === 'banner';
 }
-      storeUrl = project.linkStoreAppStore;
-  
-    storeButton.href = storeUrl || "#";
-    if (!storeUrl) storeButton.style.display = "none";
-    actions.appendChild(playButton);
-    actions.appendChild(storeButton);
-    content.appendChild(title);
-    // Description block scrollable
-    const descScroll = document.createElement("div");
-    descScroll.className = "card-desc-scroll";
-    descScroll.textContent = isRussian ? project.description : (project.description_en || project.description);
-    content.appendChild(descScroll);
-    content.appendChild(date);
-    content.appendChild(actions);
-    card.appendChild(coverContainer);
-    card.appendChild(content);
-    container.appendChild(card);
 // Playable modal logic with tags below iframe
 function openPlayableModal(project) {
   const modal = document.getElementById("modal");
