@@ -286,7 +286,7 @@
       "popularity": 74,
       "linkDemo": "projects/zombie_hospital/build_hospital.html",
       "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
-      "playable": { "type": "iframe", "src": "projects/zombie_hosptial/build_hospital.html" }
+      "playable": { "type": "iframe", "src": "projects/zombie_hospital/build_hospital.html" }
     },
     {
       "id": "hospital-upgrade",
@@ -304,7 +304,7 @@
       "popularity": 74,
       "linkDemo": "projects/zombie_hospital/hospital_upgrade.html",
       "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
-      "playable": { "type": "iframe", "src": "projects/zombie_hosptial/hospital_upgrade.html" }
+      "playable": { "type": "iframe", "src": "projects/zombie_hospital/hospital_upgrade.html" }
     },
     {
       "id": "talking-zombie",
@@ -322,7 +322,7 @@
       "popularity": 74,
       "linkDemo": "projects/zombie_hospital/talking_zombie.html",
       "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
-      "playable": { "type": "iframe", "src": "projects/zombie_hosptial/talking_zombie.html" }
+      "playable": { "type": "iframe", "src": "projects/zombie_hospital/talking_zombie.html" }
     },
     {
       "id": "healing-surgery",
@@ -340,7 +340,7 @@
       "popularity": 74,
       "linkDemo": "projects/zombie_hospital/healing_surgery.html",
       "linkStore": "https://play.google.com/store/apps/details?id=hotsiberians.idle.zombie.hospital.empire.manager.tycoon&hl=ru",
-      "playable": { "type": "iframe", "src": "projects/zombie_hosptial/healing_surgery.html" }
+      "playable": { "type": "iframe", "src": "projects/zombie_hospital/healing_surgery.html" }
     },
     {
       "id": "catch-monsters",

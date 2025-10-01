@@ -4,6 +4,36 @@ async function loadProjects() {
 
   const container = document.getElementById("project-list");
 
+  // Create modal for playable preview
+  const modal = document.createElement("div");
+  modal.className = "modal";
+  modal.innerHTML = `
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <div class="iframe-container">
+        <iframe id="game-frame"></iframe>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  // Close modal functionality
+  const closeButton = modal.querySelector(".close-button");
+  closeButton.onclick = () => {
+    modal.style.display = "none";
+    const iframe = document.getElementById("game-frame");
+    iframe.src = "";
+  };
+
+  // Close on outside click
+  modal.onclick = (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+      const iframe = document.getElementById("game-frame");
+      iframe.src = "";
+    }
+  };
+
   // Сортировка по дате (новые сверху)
   data.projects.sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -37,16 +67,34 @@ async function loadProjects() {
     date.className = "date";
     date.textContent = `Дата: ${new Date(project.date).toLocaleDateString("ru-RU")}`;
 
+    const actions = document.createElement("div");
+    actions.className = "card-actions";
+
+    const playButton = document.createElement("button");
+    playButton.className = "play-button";
+    playButton.innerHTML = "▶ Играть";
+    playButton.onclick = (e) => {
+      e.preventDefault();
+      const iframe = document.getElementById("game-frame");
+      iframe.src = project.playable.src;
+      modal.style.display = "block";
+    };
+
     const link = document.createElement("a");
-    link.href = project.linkDemo;
+    link.href = project.linkStore || "#";
     link.target = "_blank";
-    link.textContent = "Смотреть демо";
+    link.className = "store-link";
+    link.textContent = "Google Play";
+    if (!project.linkStore) link.style.display = "none";
+
+    actions.appendChild(playButton);
+    actions.appendChild(link);
 
     content.appendChild(title);
     content.appendChild(desc);
     content.appendChild(tags);
     content.appendChild(date);
-    content.appendChild(link);
+    content.appendChild(actions);
 
     card.appendChild(cover);
     card.appendChild(content);
