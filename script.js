@@ -2,7 +2,24 @@
 const userLang = navigator.language || navigator.userLanguage;
 const isRussian = userLang.toLowerCase().startsWith('ru');
 
-// Format a job entry
+//     try {
+      coverContainer.appendChild(pixiApp.view);
+      // Load image lazily with error handling
+      PIXI.Texture.fromURL(project.cover.fallback).then(texture => {
+        const sprite = new PIXI.Sprite(texture);
+        sprite.anchor.set(0.5);
+        pixiApp.stage.addChild(sprite);
+      }).catch(error => {
+        console.warn('Failed to load image:', error);
+        // Fallback to standard img element
+        const fallbackImg = document.createElement('img');
+        fallbackImg.src = project.cover.fallback;
+        fallbackImg.alt = project.title;
+        coverContainer.appendChild(fallbackImg);
+      });
+    } catch (error) {
+      console.warn('Failed to setup PIXI view:', error);
+    } a job entry
 function formatJobEntry(job) {
   const responsibilities = job.responsibilities ? 
     `<div class="responsibilities">
@@ -138,21 +155,116 @@ function renderProjects() {
     const coverContainer = document.createElement("div");
     coverContainer.className = "card-cover-container";
 
+    let pixiApp, sprite;
     // PIXI.js cover animation
-    const pixiApp = new PIXI.Application({
-      width: 280, // will be resized
-      height: 500,
-      backgroundAlpha: 0,
-      antialias: true,
-      resolution: window.devicePixelRatio || 1,
-      autoDensity: true
-    });
-    coverContainer.appendChild(pixiApp.view);
-    // Load image as PIXI sprite
-    const texture = PIXI.Texture.from(project.cover.fallback);
-    const sprite = new PIXI.Sprite(texture);
-    sprite.anchor.set(0.5);
-    pixiApp.stage.addChild(sprite);
+    if (typeof PIXI !== 'undefined') {
+      try {
+        pixiApp = new PIXI.Application({
+          width: 280, // will be resized
+          height: 500,
+          backgroundAlpha: 0,
+          antialias: true,
+          resolution: window.devicePixelRatio || 1,
+          autoDensity: true
+        });
+        coverContainer.appendChild(pixiApp.view);
+        
+        // Load image lazily with error handling
+        PIXI.Texture.fromURL(project.cover.fallback).then(texture => {
+          if (!pixiApp) return; // App might have been destroyed
+          const sprite = new PIXI.Sprite(texture);
+          sprite.anchor.set(0.5);
+          pixiApp.stage.addChild(sprite);
+          
+          // Set up resize and interaction after sprite is loaded
+          function resizePixi() {
+            const rect = coverContainer.getBoundingClientRect();
+            if (!pixiApp || !sprite) return;
+            pixiApp.renderer.resize(rect.width, rect.height);
+            sprite.x = rect.width / 2;
+            sprite.y = rect.height / 2;
+            const scale = Math.max(rect.width / texture.width, rect.height / texture.height);
+            sprite.width = texture.width * scale;
+            sprite.height = texture.height * scale;
+          }
+          
+          // Initial resize
+          setTimeout(resizePixi, 0);
+          window.addEventListener('resize', resizePixi);
+          
+          // Hover animation
+          let hover = false;
+          let mouseX = 0, mouseY = 0;
+          coverContainer.addEventListener('mouseenter', () => { hover = true; });
+          coverContainer.addEventListener('mouseleave', () => {
+            hover = false;
+            if (!sprite) return;
+            sprite.scale.set(1, 1);
+            sprite.rotation = 0;
+            if (pixiApp) {
+              pixiApp.stage.pivot.set(0, 0);
+              pixiApp.stage.position.set(0, 0);
+              pixiApp.stage.angle = 0;
+            }
+          });
+          
+          coverContainer.addEventListener('mousemove', (e) => {
+            const rect = coverContainer.getBoundingClientRect();
+            mouseX = (e.clientX - rect.left) / rect.width - 0.5;
+            mouseY = (e.clientY - rect.top) / rect.height - 0.5;
+          });
+          
+          if (pixiApp) {
+            pixiApp.ticker.add(() => {
+              if (hover && sprite) {
+                sprite.scale.set(1.07, 1.07);
+                const maxAngle = 0.18;
+                sprite.rotation = -mouseX * maxAngle * 0.5;
+                pixiApp.stage.pivot.set(sprite.x, sprite.y);
+                pixiApp.stage.position.set(sprite.x, sprite.y);
+                pixiApp.stage.angle = mouseX * 8;
+              }
+            });
+          }
+          
+          // Cleanup function
+          card.addEventListener('destroy', () => {
+            window.removeEventListener('resize', resizePixi);
+            if (pixiApp) {
+              pixiApp.destroy(true);
+              pixiApp = null;
+            }
+          });
+        }).catch(error => {
+          console.warn('Failed to load image:', error);
+          // Fallback to standard img element
+          const fallbackImg = document.createElement('img');
+          fallbackImg.src = project.cover.fallback;
+          fallbackImg.alt = project.title;
+          coverContainer.appendChild(fallbackImg);
+        });
+      } catch (error) {
+        console.warn('Failed to setup PIXI view:', error);
+        // Fallback to standard img element
+        const fallbackImg = document.createElement('img');
+        fallbackImg.src = project.cover.fallback;
+        fallbackImg.alt = project.title;
+        coverContainer.appendChild(fallbackImg);
+      }
+    } else {
+      // Fallback when PIXI is not available
+      const fallbackImg = document.createElement('img');
+      fallbackImg.src = project.cover.fallback;
+      fallbackImg.alt = project.title;
+      coverContainer.appendChild(fallbackImg);
+    }
+    if (pixiApp) {
+      coverContainer.appendChild(pixiApp.view);
+      // Load image as PIXI sprite
+      const texture = PIXI.Texture.from(project.cover.fallback);
+      const sprite = new PIXI.Sprite(texture);
+      sprite.anchor.set(0.5);
+      pixiApp.stage.addChild(sprite);
     // Resize canvas and sprite to fit container
     function resizePixi() {
       const rect = coverContainer.getBoundingClientRect();
@@ -166,26 +278,29 @@ function renderProjects() {
     }
     // Initial resize
     setTimeout(resizePixi, 0);
-    window.addEventListener('resize', resizePixi);
-    // Hover animation: scale and perspective
-    let hover = false;
-    let mouseX = 0, mouseY = 0;
-    coverContainer.addEventListener('mouseenter', () => { hover = true; });
-    coverContainer.addEventListener('mouseleave', () => {
-      hover = false;
-      sprite.scale.set(1, 1);
-      sprite.rotation = 0;
-      pixiApp.stage.pivot.set(0, 0);
-      pixiApp.stage.position.set(0, 0);
-      pixiApp.stage.angle = 0;
-    });
+    if (pixiApp) {
+      window.addEventListener('resize', resizePixi);
+      // Hover animation: scale and perspective
+      let hover = false;
+      let mouseX = 0, mouseY = 0;
+      coverContainer.addEventListener('mouseenter', () => { hover = true; });
+      coverContainer.addEventListener('mouseleave', () => {
+        hover = false;
+        sprite.scale.set(1, 1);
+        sprite.rotation = 0;
+        pixiApp.stage.pivot.set(0, 0);
+        pixiApp.stage.position.set(0, 0);
+        pixiApp.stage.angle = 0;
+      });
+    }
     coverContainer.addEventListener('mousemove', (e) => {
       const rect = coverContainer.getBoundingClientRect();
       mouseX = (e.clientX - rect.left) / rect.width - 0.5;
       mouseY = (e.clientY - rect.top) / rect.height - 0.5;
     });
-    pixiApp.ticker.add(() => {
-      if (hover) {
+    if (pixiApp) {
+      pixiApp.ticker.add(() => {
+        if (hover) {
         // Scale up
         sprite.scale.set(1.07, 1.07);
         // Perspective skew/rotation
@@ -319,19 +434,46 @@ function setupProjectTabs() {
   tabs[0].classList.add('active');
 }
 
-// Sticky header shrink on scroll (fix shaking)
-let headerShrinkApplied = false;
-window.addEventListener('scroll', function() {
-  const header = document.getElementById('main-header');
-  if (!header) return;
-  if (window.scrollY > 80 && !headerShrinkApplied) {
-    header.classList.add('shrink');
-    headerShrinkApplied = true;
-  } else if (window.scrollY <= 40 && headerShrinkApplied) {
-    header.classList.remove('shrink');
-    headerShrinkApplied = false;
+// Debounce helper function
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// Show/hide sticky header on scroll (debounced)
+let lastScrollTop = 0;
+const handleScroll = debounce(function() {
+  const stickyHeader = document.querySelector('.sticky-header');
+  if (!stickyHeader) return;
+  
+  const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+  const mainHeader = document.getElementById('main-header');
+  const mainHeaderHeight = mainHeader ? mainHeader.offsetHeight : 0;
+  
+  // Show sticky header when scrolling down past the main header
+  if (currentScroll > mainHeaderHeight) {
+    if (currentScroll > lastScrollTop) {
+      // Scrolling down
+      stickyHeader.classList.remove('visible');
+    } else {
+      // Scrolling up
+      stickyHeader.classList.add('visible');
+    }
+  } else {
+    stickyHeader.classList.remove('visible');
   }
-});
+  
+  lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+}, 10); // 10ms debounce
+
+window.addEventListener('scroll', handleScroll);
 
 document.addEventListener("DOMContentLoaded", () => {
   updatePageContent();
@@ -350,29 +492,50 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Spoiler animation for CV blocks
+  // Initialize CV content visibility
   document.querySelectorAll('.cv-spoiler').forEach(details => {
     const content = details.querySelector('.cv-content');
     if (!content) return;
-    // Set initial max-height
-    if (details.open) {
-      content.style.maxHeight = content.scrollHeight + 'px';
-    } else {
-      content.style.maxHeight = '0px';
+    
+    // Special handling for about section
+    if (details.closest('#about')) {
+      details.open = true;
+      content.style.maxHeight = 'none';
+      content.style.display = 'block';
+      return;
     }
+    
+    // Set initial state
+    if (details.open) {
+      content.style.display = 'block';
+      requestAnimationFrame(() => {
+        content.style.maxHeight = content.scrollHeight + 'px';
+      });
+    } else {
+      content.style.maxHeight = '0';
+      content.style.display = 'none';
+    }
+    
+    // Toggle animation
     details.addEventListener('toggle', function() {
-      if (details.open) {
+      if (this.open) {
         content.style.display = 'block';
         requestAnimationFrame(() => {
           content.style.maxHeight = content.scrollHeight + 'px';
         });
       } else {
-        content.style.maxHeight = '0px';
-        setTimeout(() => { content.style.display = 'none'; }, 400);
+        content.style.maxHeight = '0';
+        content.addEventListener('transitionend', function handler() {
+          if (!details.open) {
+            content.style.display = 'none';
+          }
+          content.removeEventListener('transitionend', handler);
+        });
       }
     });
+    
     // Smooth transition
-    content.style.transition = 'max-height 0.4s cubic-bezier(.4,0,.2,1), padding 0.3s';
+    content.style.transition = 'max-height 0.4s cubic-bezier(.4,0,.2,1)';
   });
 
   // --- PIXI Mouse Trail Effect ---
