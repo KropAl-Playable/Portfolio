@@ -383,116 +383,77 @@ const handleScroll = debounce(function() {
 
 window.addEventListener('scroll', handleScroll);
 
-// Initialize PIXI Mouse Trail Effect
-function initializePixiTrail() {
-  if (!window.PIXI) return;
 
-  const trailTextureUrl = 'assets/trail.PNG';
-  let app, ticker;
-  const trailPoints = [];
-  const maxTrail = 32;
-  let lastX = window.innerWidth/2;
-  let lastY = window.innerHeight/2;
-  
-  function setupPixiApp() {
-    app = new PIXI.Application({
-      width: window.innerWidth,
-      height: window.innerHeight,
-      backgroundAlpha: 0,
-      resolution: window.devicePixelRatio || 1,
-      autoDensity: true,
-      antialias: true
-    });
 
-    app.view.style.position = 'fixed';
-    app.view.style.left = '0';
-    app.view.style.top = '0';
-    app.view.style.width = '100vw';
-    app.view.style.height = '100vh';
-    app.view.style.pointerEvents = 'none';
-    app.view.style.zIndex = '999';
-    document.body.appendChild(app.view);
-  }
-
-  function handleMouseMove(e) {
-    lastX = e.clientX;
-    lastY = e.clientY;
-  }
-
-  function handleResize() {
-    if (app) app.renderer.resize(window.innerWidth, window.innerHeight);
-  }
-
-  function cleanup() {
-    document.removeEventListener('mousemove', handleMouseMove);
-    window.removeEventListener('resize', handleResize);
-    if (app && app.ticker && ticker) app.ticker.remove(ticker);
-    trailPoints.forEach(pt => {
-      if (pt.sprite) pt.sprite.destroy();
-    });
-    if (app) app.destroy(true);
-  }
-
-  function startTrailAnimation(texture) {
-    ticker = () => {
-      // Add new point
-      trailPoints.push({
-        x: lastX,
-        y: lastY,
-        alpha: 1,
-        sprite: null
-      });
-
-      if (trailPoints.length > maxTrail) {
-        const old = trailPoints.shift();
-        if (old.sprite) {
-          app.stage.removeChild(old.sprite);
-          old.sprite.destroy();
-        }
-      }
-
-      // Draw trail
-      trailPoints.forEach((pt, i) => {
-        if (!pt.sprite) {
-          pt.sprite = new PIXI.Sprite(texture);
-          pt.sprite.anchor.set(0.5);
-          app.stage.addChild(pt.sprite);
-        }
-        pt.sprite.x = pt.x;
-        pt.sprite.y = pt.y;
-        pt.sprite.alpha = (i + 1) / trailPoints.length * 0.7;
-        pt.sprite.scale.set(0.5 + 0.7 * (i + 1) / trailPoints.length);
-      });
-    };
-    
-    if (app && app.ticker) app.ticker.add(ticker);
-  }
-
-  // Initialize and set up event listeners
-  setupPixiApp();
-  document.addEventListener('mousemove', handleMouseMove);
-  window.addEventListener('resize', handleResize);
-  window.addEventListener('unload', cleanup);
-
-  // Load and initialize texture
+// Load CV data
+async function loadCVData() {
   try {
-    const texture = PIXI.Texture.from(trailTextureUrl);
-    texture.baseTexture.once('error', (error) => {
-      console.warn('Failed to load trail texture:', error);
-      cleanup();
+    const res = await fetch(isRussian ? 'cv_ru.json' : 'cv_en.json');
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    const data = await res.json();
+    
+    // Update meta information
+    document.querySelector('.header-main h1').textContent = data.meta.name;
+    document.querySelector('.header-main p').textContent = data.meta.title;
+    document.querySelector('.contacts').innerHTML = `
+      📍 ${data.meta.location} | ✉️ <a href="mailto:${data.meta.email}">${data.meta.email}</a> | 🔗 
+      <a href="#projects" class="portfolio-link">${isRussian ? 'Портфолио' : 'Portfolio'}</a>
+    `;
+    
+    // Update CV sections
+    document.querySelector('#about .summary').textContent = data.summary;
+    
+    // Update skills
+    Object.keys(data.skills).forEach(category => {
+      const ul = document.querySelector(`#${category} ul`);
+      if (ul) {
+        ul.innerHTML = data.skills[category].map(skill => `<li>${skill}</li>`).join('');
+      }
     });
-    texture.baseTexture.once('loaded', () => startTrailAnimation(texture));
+    
+    // Update experience
+    const mainExp = document.querySelector('.main-experience');
+    mainExp.innerHTML = data.experience.map(job => formatJobEntry(job)).join('');
+    
+    const earlierExp = document.querySelector('.earlier-experience');
+    earlierExp.innerHTML += data.earlier_experience.map(job => formatEarlierJob(job)).join('');
+    
+    // Update education
+    const eduList = document.querySelector('.education-list');
+    eduList.innerHTML = data.education.map(edu => `
+      <div class="education-entry">
+        <strong>${edu.institution}</strong><br>
+        ${edu.faculty}${edu.notes ? ` — ${edu.notes}` : ''}
+      </div>
+    `).join('');
+    
+    // Update courses
+    const coursesList = document.querySelector('.courses-list ul');
+    coursesList.innerHTML = data.courses.map(course => `<li>${course}</li>`).join('');
+    
+    // Update languages
+    const langList = document.querySelector('.languages ul');
+    langList.innerHTML = data.languages.map(lang => `
+      <li><strong>${lang.lang}</strong> — ${lang.level}</li>
+    `).join('');
+    
+    // Update hobbies
+    const hobbiesList = document.querySelector('.hobbies ul');
+    hobbiesList.innerHTML = data.hobbies.map(hobby => `<li>${hobby}</li>`).join('');
+    
+    // Update additional info
+    document.querySelector('.availability').textContent = data.additional.availability;
+    
   } catch (error) {
-    console.warn('Failed to initialize trail effect:', error);
-    cleanup();
+    console.error('Failed to load CV data:', error);
   }
 }
 
 // Initialize application
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize PIXI trail effect
-  initializePixiTrail();
-  
+  loadCVData(); // Add CV data loading
   updatePageContent();
   loadProjects();
   setupProjectTabs();
