@@ -666,3 +666,15 @@ footer {
   background: #D80032;
   color: #fff;
 }
+
+/* Error message */
+.error-message {
+  grid-column: 1 / -1;
+  padding: 20px;
+  text-align: center;
+  background: #fff;
+  border: 1px solid #EF233C;
+  border-radius: 10px;
+  color: #EF233C;
+  font-weight: 500;
+}

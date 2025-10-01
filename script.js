@@ -46,11 +46,21 @@ const state = {
 async function loadProjects() {
   try {
     const res = await fetch("projects.json");
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
     const data = await res.json();
-    state.projects = data.projects || [];
+    if (!data || !Array.isArray(data.projects)) {
+      throw new Error('Invalid projects data format');
+    }
+    state.projects = data.projects;
     renderProjects();
   } catch (error) {
-    console.warn('Failed to load projects:', error);
+    console.error('Failed to load projects:', error);
+    document.getElementById('project-list')?.insertAdjacentHTML(
+      'beforeend',
+      `<div class="error-message">${isRussian ? 'Ошибка загрузки проектов' : 'Failed to load projects'}</div>`
+    );
   }
 }
 
@@ -300,16 +310,6 @@ function openPlayableModal(project) {
 }
 
 
-async function loadProjects() {
-  try {
-    const res = await fetch("projects.json");
-    const data = await res.json();
-    state.projects = Array.isArray(data.projects) ? data.projects : [];
-    renderProjects();
-  } catch (error) {
-    console.warn('Failed to load projects:', error);
-  }
-}
 
 function setupProjectTabs() {
   const tabs = document.querySelectorAll('.tab');
@@ -349,6 +349,14 @@ function debounce(func, wait) {
   };
 }
 
+// Update page content based on language
+function updatePageContent() {
+  // Update text content for language-specific elements
+  document.querySelectorAll('[data-ru][data-en]').forEach(el => {
+    el.textContent = isRussian ? el.dataset.ru : el.dataset.en;
+  });
+}
+
 // Show/hide sticky header on scroll (debounced)
 let lastScrollTop = 0;
 const handleScroll = debounce(function() {
@@ -381,7 +389,7 @@ window.addEventListener('scroll', handleScroll);
 function initializePixiTrail() {
   if (!window.PIXI) return;
 
-  const trailTextureUrl = 'assets/trail.png';
+  const trailTextureUrl = 'assets/trail.PNG';
   const app = new PIXI.Application({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -418,9 +426,15 @@ function initializePixiTrail() {
   document.addEventListener('mousemove', handleMouseMove);
 
   // Load trail texture and setup animation
-  const texture = PIXI.Texture.from(trailTextureUrl);
+  try {
+    const texture = PIXI.Texture.from(trailTextureUrl);
+    texture.baseTexture.on('error', (error) => {
+      console.warn('Failed to load trail texture:', error);
+      app.destroy(true);
+      return;
+    });
 
-  // Trail animation ticker
+    // Trail animation ticker
   const ticker = () => {
     // Add new point
     trailPoints.push({
@@ -465,6 +479,10 @@ function initializePixiTrail() {
       if (pt.sprite) pt.sprite.destroy();
     });
   });
+  } catch (error) {
+    console.warn('Failed to initialize PIXI trail:', error);
+    if (app) app.destroy(true);
+  }
 }
 
 // Initialize application
@@ -533,7 +551,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // Smooth transition
     content.style.transition = 'max-height 0.4s cubic-bezier(.4,0,.2,1)';
   });
-
-  // Initialize PIXI Mouse Trail Effect
-  initializePixiTrail();
 });
