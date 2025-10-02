@@ -105,22 +105,35 @@ function createProjectCard(project) {
   coverContainer.className = "card-cover-container";
 
   let pixiApp, sprite;
-  // PIXI.js cover animation
+  // PIXI.js cover animation with limited contexts
+  const maxContexts = 10; // Maximum number of WebGL contexts to maintain
   if (typeof PIXI !== 'undefined') {
     try {
+      // Clean up old contexts if needed
+      const existingContexts = document.querySelectorAll('canvas.pixi-view');
+      if (existingContexts.length >= maxContexts) {
+        const oldestContext = existingContexts[0];
+        const oldestCard = oldestContext.closest('.card');
+        if (oldestCard) {
+          oldestCard.querySelector('.card-cover-container').innerHTML = '';
+          createFallbackImage(oldestCard.querySelector('.card-cover-container'));
+        }
+      }
+
       pixiApp = new PIXI.Application({
-        width: 280, // will be resized
-        height: 500,
+        width: 280,
+        height: 420, // Adjusted for 3:5 ratio
         backgroundAlpha: 0,
         antialias: true,
         resolution: window.devicePixelRatio || 1,
         autoDensity: true
       });
+      pixiApp.view.classList.add('pixi-view'); // For tracking contexts
       coverContainer.appendChild(pixiApp.view);
       
       // Load image lazily with error handling
       PIXI.Texture.fromURL(project.cover.fallback).then(texture => {
-        if (!pixiApp) return; // App might have been destroyed
+        if (!pixiApp) return;
         sprite = new PIXI.Sprite(texture);
         sprite.anchor.set(0.5);
         pixiApp.stage.addChild(sprite);
@@ -137,14 +150,13 @@ function createProjectCard(project) {
           sprite.height = texture.height * scale;
         }
         
-        // Initial resize
         setTimeout(resizePixi, 0);
         const resizeHandler = () => {
           if (pixiApp && sprite) resizePixi();
         };
         window.addEventListener('resize', resizeHandler);
         
-        // Hover animation
+        // Hover animation on entire card
         let hover = false;
         let mouseX = 0, mouseY = 0;
         
@@ -153,33 +165,30 @@ function createProjectCard(project) {
           hover = false;
           if (!sprite) return;
           sprite.scale.set(1, 1);
-          sprite.rotation = 0;
           if (pixiApp) {
-            pixiApp.stage.pivot.set(0, 0);
-            pixiApp.stage.position.set(0, 0);
             pixiApp.stage.angle = 0;
+            card.style.transform = 'scale(1)';
           }
         };
         
         const moveHandler = (e) => {
-          const rect = coverContainer.getBoundingClientRect();
+          const rect = card.getBoundingClientRect(); // Using card instead of coverContainer
           mouseX = (e.clientX - rect.left) / rect.width - 0.5;
           mouseY = (e.clientY - rect.top) / rect.height - 0.5;
         };
         
-        coverContainer.addEventListener('mouseenter', enterHandler);
-        coverContainer.addEventListener('mouseleave', leaveHandler);
-        coverContainer.addEventListener('mousemove', moveHandler);
+        // Apply hover handlers to the entire card
+        card.addEventListener('mouseenter', enterHandler);
+        card.addEventListener('mouseleave', leaveHandler);
+        card.addEventListener('mousemove', moveHandler);
         
-        // Animation ticker
+        // Animation ticker with reduced zoom and rotation applied to entire card
         const tickerHandler = () => {
           if (hover && sprite && pixiApp) {
-            sprite.scale.set(1.07, 1.07);
-            const maxAngle = 0.18;
-            sprite.rotation = -mouseX * maxAngle * 0.5;
-            pixiApp.stage.pivot.set(sprite.x, sprite.y);
-            pixiApp.stage.position.set(sprite.x, sprite.y);
-            pixiApp.stage.angle = mouseX * 8;
+            sprite.scale.set(1.05, 1.05); // Reduced zoom
+            const rotationX = mouseY * 8; // Vertical tilt
+            const rotationY = mouseX * -8; // Horizontal tilt
+            card.style.transform = `scale(1.02) perspective(1000px) rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
           }
         };
         
@@ -187,15 +196,15 @@ function createProjectCard(project) {
           pixiApp.ticker.add(tickerHandler);
         }
         
-        // Cleanup function for when the card is removed
+        // Enhanced cleanup
         const observer = new MutationObserver((mutations) => {
           mutations.forEach((mutation) => {
             mutation.removedNodes.forEach((node) => {
               if (node === card) {
                 window.removeEventListener('resize', resizeHandler);
-                coverContainer.removeEventListener('mouseenter', enterHandler);
-                coverContainer.removeEventListener('mouseleave', leaveHandler);
-                coverContainer.removeEventListener('mousemove', moveHandler);
+                card.removeEventListener('mouseenter', enterHandler);
+                card.removeEventListener('mouseleave', leaveHandler);
+                card.removeEventListener('mousemove', moveHandler);
                 if (pixiApp) {
                   pixiApp.ticker.remove(tickerHandler);
                   pixiApp.destroy(true);
@@ -210,14 +219,14 @@ function createProjectCard(project) {
         observer.observe(card.parentNode, { childList: true });
       }).catch(error => {
         console.warn('Failed to load image:', error);
-        createFallbackImage();
+        createFallbackImage(coverContainer);
       });
     } catch (error) {
       console.warn('Failed to setup PIXI view:', error);
-      createFallbackImage();
+      createFallbackImage(coverContainer);
     }
   } else {
-    createFallbackImage();
+    createFallbackImage(coverContainer);
   }
   
   function createFallbackImage() {
@@ -312,27 +321,45 @@ function openPlayableModal(project) {
 
 function setupProjectTabs() {
   const tabs = document.querySelectorAll('.tab');
+  
+  function updateTabStates() {
+    // Remove active state from all tabs
+    tabs.forEach(t => t.classList.remove('active'));
+    
+    // Set active state based on current filter or sort
+    if (state.currentFilter) {
+      tabs.forEach(t => {
+        if (t.dataset.filter === state.currentFilter) {
+          t.classList.add('active');
+        }
+      });
+    } else {
+      tabs.forEach(t => {
+        if (t.dataset.sort === state.currentSort) {
+          t.classList.add('active');
+        }
+      });
+    }
+  }
+  
   tabs.forEach(tab => {
     tab.addEventListener('click', function() {
-      tabs.forEach(t => t.classList.remove('active'));
-      this.classList.add('active');
       if (this.dataset.sort) {
         state.currentSort = this.dataset.sort;
-        // Remove filter highlight
-        state.currentFilter = null;
-        tabs.forEach(t => { if (t.dataset.filter) t.classList.remove('active'); });
+        state.currentFilter = null; // Clear any active filter
       }
       if (this.dataset.filter) {
         state.currentFilter = this.dataset.filter;
-        // Remove sort highlight
-        state.currentSort = 'newest';
-        tabs.forEach(t => { if (t.dataset.sort) t.classList.remove('active'); });
+        state.currentSort = 'newest'; // Reset to default sort
       }
+      
+      updateTabStates();
       renderProjects();
     });
   });
-  // Set default active
-  tabs[0].classList.add('active');
+  
+  // Set initial active state
+  updateTabStates();
 }
 
 // Update page content based on language
